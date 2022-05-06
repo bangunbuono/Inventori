@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/drawable/chat_selector.xml" value="0.1" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/drawable/home.xml" value="0.23743589743589744" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/drawable/home_selector.xml" value="0.23743589743589744" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/drawable/setting_selector.xml" value="0.23743589743589744" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/activity_add_menu.xml" value="0.25" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/activity_add_stock.xml" value="0.225" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/activity_invent_forecast.xml" value="0.225" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/activity_invent_report.xml" value="0.2109375" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/activity_invent_restock.xml" value="0.225" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/activity_invent_usage.xml" value="0.225" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/activity_invent_usage_auto.xml" value="0.225" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/activity_inventory_set.xml" value="0.25" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/activity_inventory_set_detail.xml" value="0.22" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/activity_komposisi_set.xml" value="0.25" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/activity_menu_set.xml" value="0.25" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/activity_menu_set_detail.xml" value="0.225" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/activity_usage_set.xml" value="0.225" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/fragment_chatt.xml" value="0.25" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/fragment_home.xml" value="0.225" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/komposisi_row.xml" value="0.225" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/menu_row.xml" value="0.25" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/stock_row.xml" value="0.225" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/usage_auto_row.xml" value="0.25" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/usage_row.xml" value="0.225" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/menu/bottom_nav.xml" value="0.225" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/menu/bottomnav.xml" value="0.1" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/menu/inventory.xml" value="0.225" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/menu/navigation_bottom.xml" value="0.225" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
