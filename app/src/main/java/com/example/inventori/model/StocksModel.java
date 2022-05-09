@@ -1,11 +1,22 @@
 package com.example.inventori.model;
 
 public class StocksModel {
+
+
     private int id;
     private int waktu;
     private int min_pesan;
     private int jumlah;
     private String bahan_baku, satuan;
+
+    public StocksModel(int id, int waktu, int min_pesan, int jumlah, String bahan_baku, String satuan) {
+        this.id = id;
+        this.waktu = waktu;
+        this.min_pesan = min_pesan;
+        this.jumlah = jumlah;
+        this.bahan_baku = bahan_baku;
+        this.satuan = satuan;
+    }
 
     public int getJumlah() {
         return jumlah;
@@ -14,6 +25,7 @@ public class StocksModel {
     public void setJumlah(int jumlah) {
         this.jumlah = jumlah;
     }
+
     public int getId() {
         return id;
     }

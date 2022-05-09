@@ -14,4 +14,11 @@
         android:text="restock"
         tools:layout_editor_absoluteX="125dp"
         tools:layout_editor_absoluteY="34dp" />
+
+    <Spinner
+        android:id="@+id/spinRestock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:minHeight="48dp" />
 </LinearLayout>

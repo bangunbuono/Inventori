@@ -1,5 +1,6 @@
 package com.example.inventori.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ResponseModel {
@@ -8,6 +9,15 @@ public class ResponseModel {
     private List<MenuModel> data;
     private List<KomposisiModel> komposisiModelList;
     private List<StocksModel> stocksModels;
+    private ArrayList<StocksModel> restockModel;
+
+    public ArrayList<StocksModel> getRestockModel() {
+        return restockModel;
+    }
+
+    public void setRestockModel(ArrayList<StocksModel> restockModel) {
+        this.restockModel = restockModel;
+    }
 
     public List<StocksModel> getStocksModels() {
         return stocksModels;

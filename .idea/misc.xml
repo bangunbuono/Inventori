@@ -25,6 +25,9 @@
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/fragment_home.xml" value="0.225" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/komposisi_row.xml" value="0.225" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/menu_row.xml" value="0.25" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/restock_spin.xml" value="0.225" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/restock_spinner.xml" value="0.225" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/spinner_restock.xml" value="0.225" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/stock_row.xml" value="0.225" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/usage_auto_row.xml" value="0.25" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/usage_row.xml" value="0.225" />
@@ -32,6 +35,7 @@
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/menu/bottomnav.xml" value="0.1" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/menu/inventory.xml" value="0.225" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/menu/navigation_bottom.xml" value="0.225" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/xml/network_security_config.xml" value="0.225" />
       </map>
     </option>
   </component>
