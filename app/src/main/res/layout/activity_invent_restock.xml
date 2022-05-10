@@ -7,18 +7,45 @@
     android:orientation="vertical"
     tools:context=".Activity.InventRestock">
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="restock"
-        tools:layout_editor_absoluteX="125dp"
-        tools:layout_editor_absoluteY="34dp" />
-
-    <Spinner
-        android:id="@+id/spinRestock"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:minHeight="48dp" />
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/spinRestock"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="4"
+            android:minHeight="48dp" />
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_marginTop="10dp"
+            android:textSize="18sp"
+            android:inputType="number"
+            android:id="@+id/etRestockJumlah"/>
+
+        <TextView
+            android:id="@+id/tvRestockSatuan"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:text="TextView" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnCollect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:text="konfirmasi"
+        app:cornerRadius="25dp" />
 </LinearLayout>

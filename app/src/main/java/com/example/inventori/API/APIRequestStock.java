@@ -38,4 +38,11 @@ public interface APIRequestStock {
             @Field("min_pesan") int min_pesan,
             @Field("waktu") int waktu
     );
+
+    @FormUrlEncoded
+    @POST("restockadd.php")
+    Call<ResponseModel> addStocks(
+            @Field("id") int id,
+            @Field("jumlah") int jumlah
+    );
 }
