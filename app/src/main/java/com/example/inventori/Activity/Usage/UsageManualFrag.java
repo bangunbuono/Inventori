@@ -1,9 +1,12 @@
-package com.example.inventori.Activity;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.example.inventori.Activity.Usage;
 
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +22,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.inventori.API.APIRequestStock;
 import com.example.inventori.API.ServerConnection;
+import com.example.inventori.Activity.Restock.InventRestock;
 import com.example.inventori.Adapter.AdapterSpinnerRestock;
 import com.example.inventori.R;
 import com.example.inventori.model.ResponseModel;
@@ -33,7 +37,12 @@ import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class InventRestock extends AppCompatActivity {
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link UsageManualFrag#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class UsageManualFrag extends Fragment {
 
     Spinner spinRestock;
     ArrayList<RestockModel> restockList = new ArrayList<>();
@@ -44,20 +53,57 @@ public class InventRestock extends AppCompatActivity {
     Button btnCollectRestock;
     int id, jumlah;
 
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+
+    public UsageManualFrag() {
+        // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment UsageManualFrag.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static UsageManualFrag newInstance(String param1, String param2) {
+        UsageManualFrag fragment = new UsageManualFrag();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_invent_restock);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
 
-        requestQueue = Volley.newRequestQueue(this);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_usage_manual, container, false);
+        requestQueue = Volley.newRequestQueue(getActivity());
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        spinRestock = findViewById(R.id.spinRestock);
-        tvRestockSatuan = findViewById(R.id.tvRestockSatuan);
-        btnCollectRestock = findViewById(R.id.btnCollect);
-        etRestockJumlah = findViewById(R.id.etRestockJumlah);
-
-        restockList = new ArrayList<>();
+        spinRestock = view.findViewById(R.id.spinnerManual);
+        tvRestockSatuan = view.findViewById(R.id.tvManual);
+        btnCollectRestock = view.findViewById(R.id.btnManual);
+        etRestockJumlah = view.findViewById(R.id.etManual);
 
         String URL = "http://10.0.2.2/notif/restocktest.php";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL,
@@ -73,7 +119,7 @@ public class InventRestock extends AppCompatActivity {
                         id = jsonObject.optInt("id");
                         restockList.add(new RestockModel(id, bahan, satuan));
                     }
-                    adapterRestock = new AdapterSpinnerRestock(InventRestock.this, restockList);
+                    adapterRestock = new AdapterSpinnerRestock(getActivity(), restockList);
                     spinRestock.setAdapter(adapterRestock);
                 }
                 catch (JSONException e){
@@ -83,7 +129,8 @@ public class InventRestock extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Toast.makeText(getActivity(), "gagal memuat data: "+error.getMessage(),
+                        Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -92,8 +139,8 @@ public class InventRestock extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 tvRestockSatuan.setText(restockList.get(i).getSatuan());
                 id = restockList.get(i).getId();
-                Toast.makeText(InventRestock.this, "item: "+restockList.get(i).getBahan_baku(),
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "item: "+restockList.get(i).getBahan_baku(),
+//                        Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -105,24 +152,24 @@ public class InventRestock extends AppCompatActivity {
             jumlah = Integer.parseInt(etRestockJumlah.getText().toString().trim());
             restockAdd();
         });
-
+        return view;
     }
 
     private void restockAdd(){
         APIRequestStock stockData = ServerConnection.connection().create(APIRequestStock.class);
-        Call<ResponseModel> addStock = stockData.addStocks(id,jumlah);
+        Call<ResponseModel> minusStock = stockData.minStocks(id,jumlah);
 
-        addStock.enqueue(new Callback<ResponseModel>() {
+        minusStock.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, retrofit2.Response<ResponseModel> response) {
                 etRestockJumlah.setText(null);
-                Toast.makeText(InventRestock.this, "berhasil menambahkan stok", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "berhasil", Toast.LENGTH_SHORT).show();
 
             }
 
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
-                Toast.makeText(InventRestock.this, "gaga menambahkan stok "+t.getMessage(),
+                Toast.makeText(getActivity(), "gagal "+t.getMessage(),
                         Toast.LENGTH_SHORT).show();
             }
         });

@@ -45,7 +45,7 @@
             android:exported="false"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".Activity.InventRestock"
+            android:name=".Activity.Restock.InventRestock"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
         <activity

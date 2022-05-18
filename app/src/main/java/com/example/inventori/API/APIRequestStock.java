@@ -45,4 +45,11 @@ public interface APIRequestStock {
             @Field("id") int id,
             @Field("jumlah") int jumlah
     );
+
+    @FormUrlEncoded
+    @POST("stockout.php")
+    Call<ResponseModel> minStocks(
+            @Field("id") int id,
+            @Field("jumlah") int jumlah
+    );
 }

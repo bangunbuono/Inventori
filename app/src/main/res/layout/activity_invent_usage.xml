@@ -7,11 +7,48 @@
     android:orientation="vertical"
     tools:context=".Activity.Usage.InventUsage">
 
-    <TextView
-        android:id="@+id/textView2"
+    <RadioGroup
+        android:id="@+id/radiogroupUsage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="usage" />
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp">
+
+        <RadioButton
+            android:id="@+id/radio_usage_auto"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/usage_selector"
+            android:button="@drawable/null_usage_button"
+            android:checked="true"
+            android:onClick="usageSelector"
+            android:text="Auto"
+            android:textAlignment="center"
+            android:textColor="@drawable/usage_text_selector"
+            android:textStyle="bold" />
+
+        <RadioButton
+            android:id="@+id/radio_usage_manual"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/usage_selector"
+            android:button="@drawable/null_usage_button"
+            android:onClick="usageSelector"
+            android:text="Manual"
+            android:textAlignment="center"
+            android:textColor="@drawable/usage_text_selector"
+            android:textStyle="bold" />
+    </RadioGroup>
+
+    <FrameLayout
+        android:id="@+id/flUsage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </FrameLayout>
 
     <Button
         android:id="@+id/button"

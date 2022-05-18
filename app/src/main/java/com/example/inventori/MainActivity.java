@@ -11,7 +11,7 @@ import android.widget.Button;
 
 import com.example.inventori.Activity.InventForecast;
 import com.example.inventori.Activity.InventReport;
-import com.example.inventori.Activity.InventRestock;
+import com.example.inventori.Activity.Restock.InventRestock;
 import com.example.inventori.Activity.Usage.InventUsage;
 import com.example.inventori.Activity.Stock.InventorySet;
 import com.example.inventori.Activity.Menu.MenuSet;
