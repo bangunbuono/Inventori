@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.inventori.API.APIRequestMenu;
 import com.example.inventori.API.ServerConnection;
+import com.example.inventori.Activity.User.UserSession;
 import com.example.inventori.Adapter.AdapterMenuSet;
 import com.example.inventori.R;
 import com.example.inventori.model.MenuModel;
@@ -30,11 +31,16 @@ public class MenuSet extends AppCompatActivity {
     ListView lvMenu;
     List<MenuModel> listMenu;
     TextView tvAddMenu;
+    UserSession userSession;
+    String user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_set);
+
+        userSession = new UserSession(getApplicationContext());
+        user = userSession.getUserDetail().get("username");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -58,7 +64,7 @@ public class MenuSet extends AppCompatActivity {
 
     public void retrieveData(){
         APIRequestMenu dataMenu = ServerConnection.connection().create(APIRequestMenu.class);
-        Call<ResponseModel> showData = dataMenu.showMenu();
+        Call<ResponseModel> showData = dataMenu.showMenu(user);
 
         showData.enqueue(new Callback<ResponseModel>() {
             @Override
@@ -67,10 +73,13 @@ public class MenuSet extends AppCompatActivity {
                 String pesan = response.body().getPesan();
 
                 listMenu = response.body().getData();
-                adapter = new AdapterMenuSet(MenuSet.this, listMenu);
-                lvMenu.setAdapter(adapter);
-                Toast.makeText(MenuSet.this,
-                        "success: " +"(" +code+ ")" +" "+ pesan, Toast.LENGTH_SHORT).show();
+                if (listMenu != null){
+                    adapter = new AdapterMenuSet(MenuSet.this, listMenu);
+                    lvMenu.setAdapter(adapter);
+                    Toast.makeText(MenuSet.this,
+                            "success: " +"(" +code+ ")" +" "+ pesan, Toast.LENGTH_SHORT).show();
+                }
+
             }
 
             @Override
@@ -79,5 +88,11 @@ public class MenuSet extends AppCompatActivity {
                 System.out.println(t.getMessage());
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        retrieveData();
     }
 }

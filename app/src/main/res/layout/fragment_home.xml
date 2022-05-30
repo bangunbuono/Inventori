@@ -7,13 +7,24 @@
     android:orientation="vertical"
     tools:context=".BottomNavBar.HomeFragment">
 
+    <TextView
+        android:id="@+id/tvUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/homeFragment"
+        android:layout_marginLeft="28dp"
+        android:layout_marginTop="5dp"
+        android:fontFamily="serif"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="28dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:layout_marginRight="28dp"
-        app:cardBackgroundColor="@color/teal_200"
+        app:cardBackgroundColor="#EAEAEA"
         app:cardCornerRadius="25dp">
 
         <LinearLayout

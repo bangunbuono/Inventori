@@ -121,7 +121,8 @@
             android:ems="10"
             android:hint="contoh (air, susu)"
             android:inputType="textPersonName"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:visibility="gone" />
 
         <EditText
             android:id="@+id/etJumlahy"
@@ -131,7 +132,8 @@
             android:ems="10"
             android:hint="(15,100, 200)"
             android:inputType="number"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:visibility="gone" />
 
         <EditText
             android:id="@+id/etSatuany"
@@ -141,7 +143,8 @@
             android:ems="10"
             android:hint="(ml, gram)"
             android:inputType="textPersonName"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:visibility="gone" />
 
     </LinearLayout>
 
@@ -149,7 +152,9 @@
         android:id="@+id/btnTambahKomposisiy"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="tambah komposisi" />
+        android:text="tambah komposisi"
+        app:cornerRadius="25dp"
+        android:layout_margin="10dp"/>
 
     <Button
         android:id="@+id/btnDetailSave"

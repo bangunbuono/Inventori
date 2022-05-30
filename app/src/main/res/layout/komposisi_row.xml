@@ -28,7 +28,8 @@
             android:ems="10"
             android:hint="bahan"
             android:inputType="textPersonName"
-            android:paddingLeft="5dp" />
+            android:paddingLeft="5dp"
+            android:visibility="visible" />
 
         <EditText
             android:id="@+id/etJumlah"

@@ -10,6 +10,7 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.inventori.Activity.User.UserSession;
 import com.example.inventori.R;
 import com.example.inventori.model.KomposisiModel;
 
@@ -19,6 +20,8 @@ public class AdapterKomposisi extends ArrayAdapter<KomposisiModel> {
     Context context;
     private List<KomposisiModel> komposisiModels;
     EditText etBahan,etJumlah,etSatuan, etIdBahan;
+    String user;
+    UserSession userSession;
 
     public AdapterKomposisi(Context context, List<KomposisiModel> objects) {
         super(context, R.layout.komposisi_row,objects);
@@ -30,6 +33,9 @@ public class AdapterKomposisi extends ArrayAdapter<KomposisiModel> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        userSession = new UserSession(context);
+        user = userSession.getUserDetail().get("username");
+
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(R.layout.komposisi_row, parent, false);
 
@@ -45,4 +51,5 @@ public class AdapterKomposisi extends ArrayAdapter<KomposisiModel> {
 
         return convertView;
     }
+
 }

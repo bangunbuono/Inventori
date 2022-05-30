@@ -3,8 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".Activity.Usage.UsageAutoFrag">
+    tools:context=".Activity.Usage.UsageAutoFrag"
+    android:id="@+id/usageAutoFrag">
 
     <ListView
         android:id="@+id/lvUsageAuto1"
@@ -13,8 +15,10 @@
 
     <Button
         android:id="@+id/btnOrder1"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:cornerRadius = "25dp"
+        android:layout_gravity="center_horizontal"
         android:text="Pesan" />
 
 </LinearLayout>

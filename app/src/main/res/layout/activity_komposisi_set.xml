@@ -52,20 +52,23 @@
             android:textStyle="bold" />
     </LinearLayout>
 
+    <ListView
+        android:id="@+id/lvKomposisi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/komposisi_row" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/etBahanx"
+        <Spinner
+            android:id="@+id/spinnerBahanx"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="4"
-            android:ems="10"
-            android:hint="contoh (air, susu)"
-            android:inputType="textPersonName"
-            android:textSize="16sp" />
+            android:paddingTop="9dp" />
 
         <EditText
             android:id="@+id/etJumlahx"
@@ -77,14 +80,12 @@
             android:inputType="number"
             android:textSize="16sp" />
 
-        <EditText
-            android:id="@+id/etSatuanx"
+        <TextView
+            android:id="@+id/tvSatuanx"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:ems="10"
-            android:hint="(ml, gram)"
-            android:inputType="textPersonName"
             android:textSize="16sp" />
 
     </LinearLayout>
@@ -94,12 +95,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="tambah komposisi" />
-
-    <ListView
-        android:id="@+id/lvKomposisi"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:listitem="@layout/komposisi_row" />
 
     <Button
         android:id="@+id/btnSimpanKomposisi"

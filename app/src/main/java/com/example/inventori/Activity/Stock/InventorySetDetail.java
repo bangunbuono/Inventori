@@ -1,4 +1,4 @@
-package com.example.inventori.Activity;
+package com.example.inventori.Activity.Stock;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.example.inventori.API.APIRequestStock;
 import com.example.inventori.API.ServerConnection;
+import com.example.inventori.Activity.User.UserSession;
 import com.example.inventori.R;
 import com.example.inventori.model.ResponseModel;
 import retrofit2.Call;

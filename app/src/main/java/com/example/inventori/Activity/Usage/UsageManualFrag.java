@@ -14,28 +14,20 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.inventori.API.APIRequestStock;
+import com.example.inventori.API.APIRestock;
 import com.example.inventori.API.ServerConnection;
-import com.example.inventori.Activity.Restock.InventRestock;
+import com.example.inventori.Activity.User.UserSession;
 import com.example.inventori.Adapter.AdapterSpinnerRestock;
 import com.example.inventori.R;
 import com.example.inventori.model.ResponseModel;
 import com.example.inventori.model.RestockModel;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,13 +36,14 @@ import retrofit2.Callback;
  */
 public class UsageManualFrag extends Fragment {
 
-    Spinner spinRestock;
-    ArrayList<RestockModel> restockList = new ArrayList<>();
-    RequestQueue requestQueue;
-    TextView tvRestockSatuan;
-    EditText etRestockJumlah;
-    AdapterSpinnerRestock adapterRestock;
-    Button btnCollectRestock;
+    Spinner spinner;
+    ArrayList<RestockModel> stockList = new ArrayList<>();
+    TextView tvSatuanStock;
+    EditText etJumlahStock;
+    AdapterSpinnerRestock adapter;
+    Button btnConfirm;
+    String user;
+    UserSession userSession;
     int id, jumlah;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -66,15 +59,6 @@ public class UsageManualFrag extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment UsageManualFrag.
-     */
-    // TODO: Rename and change types and number of parameters
     public static UsageManualFrag newInstance(String param1, String param2) {
         UsageManualFrag fragment = new UsageManualFrag();
         Bundle args = new Bundle();
@@ -97,48 +81,21 @@ public class UsageManualFrag extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        userSession = new UserSession(getActivity());
+        user = userSession.getUserDetail().get("username");
         View view = inflater.inflate(R.layout.fragment_usage_manual, container, false);
-        requestQueue = Volley.newRequestQueue(getActivity());
 
-        spinRestock = view.findViewById(R.id.spinnerManual);
-        tvRestockSatuan = view.findViewById(R.id.tvManual);
-        btnCollectRestock = view.findViewById(R.id.btnManual);
-        etRestockJumlah = view.findViewById(R.id.etManual);
+        spinner = view.findViewById(R.id.spinnerManual);
+        tvSatuanStock = view.findViewById(R.id.tvManual);
+        btnConfirm = view.findViewById(R.id.btnManual);
+        etJumlahStock = view.findViewById(R.id.etManual);
 
-        String URL = "http://10.0.2.2/notif/restocktest.php";
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL,
-                null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONArray jsonArray = response.getJSONArray("stocks");
-                    for (int i=0; i<jsonArray.length();i++){
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        String bahan = jsonObject.optString("bahan_baku");
-                        String satuan = jsonObject.optString("satuan");
-                        id = jsonObject.optInt("id");
-                        restockList.add(new RestockModel(id, bahan, satuan));
-                    }
-                    adapterRestock = new AdapterSpinnerRestock(getActivity(), restockList);
-                    spinRestock.setAdapter(adapterRestock);
-                }
-                catch (JSONException e){
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity(), "gagal memuat data: "+error.getMessage(),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-        requestQueue.add(jsonObjectRequest);
-        spinRestock.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        restockList();
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                tvRestockSatuan.setText(restockList.get(i).getSatuan());
-                id = restockList.get(i).getId();
+                tvSatuanStock.setText(stockList.get(i).getSatuan());
+                id = stockList.get(i).getId();
 //                Toast.makeText(getActivity(), "item: "+restockList.get(i).getBahan_baku(),
 //                        Toast.LENGTH_SHORT).show();
             }
@@ -148,11 +105,30 @@ public class UsageManualFrag extends Fragment {
             }
         });
 
-        btnCollectRestock.setOnClickListener(view1 -> {
-            jumlah = Integer.parseInt(etRestockJumlah.getText().toString().trim());
+        btnConfirm.setOnClickListener(view1 -> {
+            jumlah = Integer.parseInt(etJumlahStock.getText().toString().trim());
             restockAdd();
         });
         return view;
+    }
+
+    private void restockList(){
+        APIRestock restockData = ServerConnection.connection().create(APIRestock.class);
+        Call<ResponseModel> getData = restockData.getStock(user);
+
+        getData.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+                stockList = response.body().getStocks();
+                adapter = new AdapterSpinnerRestock(getActivity(), stockList);
+                spinner.setAdapter(adapter);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel> call, Throwable t) {
+                t.fillInStackTrace();
+            }
+        });
     }
 
     private void restockAdd(){
@@ -162,7 +138,7 @@ public class UsageManualFrag extends Fragment {
         minusStock.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, retrofit2.Response<ResponseModel> response) {
-                etRestockJumlah.setText(null);
+                etJumlahStock.setText(null);
                 Toast.makeText(getActivity(), "berhasil", Toast.LENGTH_SHORT).show();
 
             }

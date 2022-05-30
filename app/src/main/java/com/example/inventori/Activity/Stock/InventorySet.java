@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.inventori.API.APIRequestStock;
 import com.example.inventori.API.ServerConnection;
+import com.example.inventori.Activity.User.UserSession;
 import com.example.inventori.Adapter.AdapterStocks;
 import com.example.inventori.R;
 import com.example.inventori.model.ResponseModel;
@@ -33,11 +34,16 @@ public class InventorySet extends AppCompatActivity{
     AdapterStocks adapterStocks;
     List<StocksModel> stocksModelList;
     TextView tvAddStock;
+    String user;
+    UserSession userSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory_set);
+
+        userSession = new UserSession(getApplicationContext());
+        user = userSession.getUserDetail().get("username");
 
         ActivityResultLauncher<Intent> launcher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -54,23 +60,24 @@ public class InventorySet extends AppCompatActivity{
         getStocks();
 
         tvAddStock.setOnClickListener(view -> {
-            launcher.launch(new Intent(InventorySet.this, AddStock.class));
+            Intent intent = new Intent(InventorySet.this, AddStock.class);
+            intent.putExtra("user", user);
+            launcher.launch(intent);
         });
 
     }
     private void getStocks(){
         APIRequestStock stockData = ServerConnection.connection().create(APIRequestStock.class);
-        Call<ResponseModel> showData = stockData.showStock();
+        Call<ResponseModel> showData = stockData.showStock(user);
 
         showData.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
-                int code = response.body().getCode();
-                String pesan = response.body().getPesan();
                 stocksModelList = response.body().getStocksModels();
-                adapterStocks = new AdapterStocks(InventorySet.this, stocksModelList);
-                lvStocks.setAdapter(adapterStocks);
-                Toast.makeText(InventorySet.this, "berhasil "+code+" "+pesan, Toast.LENGTH_SHORT).show();
+                if(stocksModelList != null){
+                    adapterStocks = new AdapterStocks(InventorySet.this, stocksModelList);
+                    lvStocks.setAdapter(adapterStocks);
+                }
             }
 
             @Override

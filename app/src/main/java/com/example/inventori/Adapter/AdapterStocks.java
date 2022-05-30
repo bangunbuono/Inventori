@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 
 import com.example.inventori.API.APIRequestStock;
 import com.example.inventori.API.ServerConnection;
-import com.example.inventori.Activity.InventorySetDetail;
+import com.example.inventori.Activity.Stock.InventorySetDetail;
 import com.example.inventori.R;
 import com.example.inventori.model.ResponseModel;
 import com.example.inventori.model.StocksModel;
@@ -51,10 +51,13 @@ public class AdapterStocks extends ArrayAdapter<StocksModel> {
         tvStockJumlah = convertView.findViewById(R.id.tvStockJumlah);
         tvStockSatuan = convertView.findViewById(R.id.tvStockSatuan);
 
-        tvIdStock.setText(stocksModelList.get(position).getId()+"");
-        tvStockName.setText(stocksModelList.get(position).getBahan_baku());
-        tvStockJumlah.setText(stocksModelList.get(position).getJumlah()+"");
-        tvStockSatuan.setText(stocksModelList.get(position).getSatuan());
+        if(stocksModelList.size() != 0){
+            tvIdStock.setText(stocksModelList.get(position).getId()+"");
+            tvStockName.setText(stocksModelList.get(position).getBahan_baku());
+            tvStockJumlah.setText(stocksModelList.get(position).getJumlah()+"");
+            tvStockSatuan.setText(stocksModelList.get(position).getSatuan());
+        }
+
 
         convertView.setOnClickListener(view -> {
             index = stocksModelList.get(position).getId();

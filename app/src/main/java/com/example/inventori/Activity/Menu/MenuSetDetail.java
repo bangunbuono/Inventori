@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.example.inventori.API.APIRequestKomposisi;
 import com.example.inventori.API.APIRequestMenu;
 import com.example.inventori.API.ServerConnection;
+import com.example.inventori.Activity.User.UserSession;
 import com.example.inventori.Adapter.AdapterKomposisi;
 import com.example.inventori.R;
 import com.example.inventori.model.KomposisiModel;
@@ -26,18 +27,22 @@ import retrofit2.Response;
 
 public class MenuSetDetail extends AppCompatActivity {
 
-    EditText etDetailMenu, etDetailPrice, etDetailDesc,etDetailID, etBahany, etJumlahy, etSatuany;;
+    EditText etDetailMenu, etDetailPrice, etDetailDesc,etDetailID, etBahany, etJumlahy, etSatuany;
     Button btnDetailSave, btnTambahKomposisiy;
     ListView lvKomposisiy;
     List<KomposisiModel> komposisiModels;
     AdapterKomposisi adapterKomposisi;
     int id,harga, jumlah, komposisiId, i;
-    String menu,deskripsi, table, bahan, satuan;
+    String menu,deskripsi, table, bahan, satuan, user;
+    UserSession userSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_set_detail);
+
+        userSession = new UserSession(getApplicationContext());
+        user = userSession.getUserDetail().get("username");
 
         etDetailMenu = findViewById(R.id.etDetailMenu);
         etDetailPrice = findViewById(R.id.etDetailPrice);
@@ -57,7 +62,6 @@ public class MenuSetDetail extends AppCompatActivity {
         menu = intent.getStringExtra("menuName");
         deskripsi = intent.getStringExtra("menuDesc");
 
-        table = menu.trim().replaceAll("\\s", "_");
         getKomposisi();
 
         etDetailID.setText(id+"");
@@ -86,17 +90,22 @@ public class MenuSetDetail extends AppCompatActivity {
 
                 updateKomposisi();
             }
-            if(etBahany.getText().toString().trim() != null &&
-                    etJumlahy.getText().toString().trim() != null &&
-                    etSatuany.getText().toString().trim() != null){
+            if(!etBahany.getText().toString().trim().isEmpty() &&
+                    !etJumlahy.getText().toString().trim().isEmpty() &&
+                    !etSatuany.getText().toString().trim().isEmpty()){
                 bahan = etBahany.getText().toString().trim();
-                jumlah = Integer.parseInt(etJumlahy.getText().toString().trim());
+                String jumlahBahan = etJumlahy.getText().toString().trim();
+                jumlah = Integer.parseInt(jumlahBahan);
                 satuan = etSatuany.getText().toString().trim();
                 addKomposisi();
             }
         });
 
         btnTambahKomposisiy.setOnClickListener(view -> {
+            etBahany.setVisibility(View.VISIBLE);
+            etJumlahy.setVisibility(View.VISIBLE);
+            etSatuany.setVisibility(View.VISIBLE);
+
             if(etBahany.getText().toString().isEmpty()){
                 etBahany.setError("harus diisi");
             }
@@ -139,13 +148,17 @@ public class MenuSetDetail extends AppCompatActivity {
     private void getKomposisi(){
         APIRequestKomposisi dataKomposisi = ServerConnection.connection().create(APIRequestKomposisi.class);
         Call<ResponseModel> komposisi = dataKomposisi.getKomposisi(
-                table);
+                menu, user);
         komposisi.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+                assert response.body() != null;
                 komposisiModels = response.body().getKomposisiModelList();
-                adapterKomposisi = new AdapterKomposisi(MenuSetDetail.this,komposisiModels);
-                lvKomposisiy.setAdapter(adapterKomposisi);
+                if(komposisiModels != null) {
+                    adapterKomposisi = new AdapterKomposisi(MenuSetDetail.this,komposisiModels);
+                    lvKomposisiy.setAdapter(adapterKomposisi);
+                }
+
             }
 
             @Override
@@ -160,13 +173,16 @@ public class MenuSetDetail extends AppCompatActivity {
     private void addKomposisi(){
         APIRequestKomposisi dataKomposisi = ServerConnection.connection().create(APIRequestKomposisi.class);
         Call<ResponseModel> tambahKompsisi = dataKomposisi.addKomposisi(
-                table,bahan, jumlah, satuan);
+                user,bahan, jumlah, satuan, menu);
         tambahKompsisi.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
                 etBahany.setText(null);
                 etJumlahy.setText(null);
                 etSatuany.setText(null);
+                etBahany.setVisibility(View.GONE);
+                etJumlahy.setVisibility(View.GONE);
+                etSatuany.setVisibility(View.GONE);
                 getKomposisi();
                 Toast.makeText(MenuSetDetail.this, "Komposisi ditambahkan", Toast.LENGTH_SHORT).show();
             }
@@ -181,7 +197,7 @@ public class MenuSetDetail extends AppCompatActivity {
     private void updateKomposisi(){
         APIRequestKomposisi dataKomposisi = ServerConnection.connection().create(APIRequestKomposisi.class);
         Call<ResponseModel> ubahKomposisi = dataKomposisi.updateKomposisi(
-                table, komposisiId, bahan, jumlah, satuan);
+                komposisiId, bahan, jumlah, satuan);
         ubahKomposisi.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {

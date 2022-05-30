@@ -11,37 +11,31 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.inventori.API.APIRequestStock;
+import com.example.inventori.API.APIRestock;
 import com.example.inventori.API.ServerConnection;
+import com.example.inventori.Activity.User.UserSession;
 import com.example.inventori.Adapter.AdapterSpinnerRestock;
 import com.example.inventori.R;
 import com.example.inventori.model.ResponseModel;
 import com.example.inventori.model.RestockModel;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 public class InventRestock extends AppCompatActivity {
 
     Spinner spinRestock;
     ArrayList<RestockModel> restockList = new ArrayList<>();
-    RequestQueue requestQueue;
     TextView tvRestockSatuan;
     EditText etRestockJumlah;
     AdapterSpinnerRestock adapterRestock;
     Button btnCollectRestock;
+    String user;
+    UserSession userSession;
     int id, jumlah;
 
     @Override
@@ -49,7 +43,8 @@ public class InventRestock extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invent_restock);
 
-        requestQueue = Volley.newRequestQueue(this);
+        userSession = new UserSession(getApplicationContext());
+        user = userSession.getUserDetail().get("username");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         spinRestock = findViewById(R.id.spinRestock);
@@ -59,34 +54,7 @@ public class InventRestock extends AppCompatActivity {
 
         restockList = new ArrayList<>();
 
-        String URL = "http://10.0.2.2/notif/restocktest.php";
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL,
-                null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONArray jsonArray = response.getJSONArray("stocks");
-                    for (int i=0; i<jsonArray.length();i++){
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        String bahan = jsonObject.optString("bahan_baku");
-                        String satuan = jsonObject.optString("satuan");
-                        id = jsonObject.optInt("id");
-                        restockList.add(new RestockModel(id, bahan, satuan));
-                    }
-                    adapterRestock = new AdapterSpinnerRestock(InventRestock.this, restockList);
-                    spinRestock.setAdapter(adapterRestock);
-                }
-                catch (JSONException e){
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-        requestQueue.add(jsonObjectRequest);
+        restockList();
         spinRestock.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -106,6 +74,25 @@ public class InventRestock extends AppCompatActivity {
             restockAdd();
         });
 
+    }
+
+    private void restockList(){
+        APIRestock restockData = ServerConnection.connection().create(APIRestock.class);
+        Call<ResponseModel> getData = restockData.getStock(user);
+
+        getData.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+                restockList = response.body().getStocks();
+                adapterRestock = new AdapterSpinnerRestock(InventRestock.this, restockList);
+                spinRestock.setAdapter(adapterRestock);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel> call, Throwable t) {
+                t.fillInStackTrace();
+            }
+        });
     }
 
     private void restockAdd(){

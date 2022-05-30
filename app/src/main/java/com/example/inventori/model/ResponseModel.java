@@ -5,18 +5,26 @@ import java.util.List;
 
 public class ResponseModel {
     private int code;
-    private String pesan;
+    private String pesan, status;
     private List<MenuModel> data;
     private List<KomposisiModel> komposisiModelList;
     private List<StocksModel> stocksModels;
-    private ArrayList<StocksModel> restockModel;
+    private ArrayList<RestockModel> stocks;
 
-    public ArrayList<StocksModel> getRestockModel() {
-        return restockModel;
+    public String getStatus() {
+        return status;
     }
 
-    public void setRestockModel(ArrayList<StocksModel> restockModel) {
-        this.restockModel = restockModel;
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public ArrayList<RestockModel> getStocks() {
+        return stocks;
+    }
+
+    public void setRestockModel(ArrayList<RestockModel> stocks) {
+        this.stocks = stocks;
     }
 
     public List<StocksModel> getStocksModels() {

@@ -9,8 +9,11 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface APIRequestStock {
-    @GET("stockset.php")
-    Call<ResponseModel> showStock();
+    @FormUrlEncoded
+    @POST("stockset.php")
+    Call<ResponseModel> showStock(
+            @Field("user") String user
+    );
 
     @FormUrlEncoded
     @POST("stockdetail.php")
@@ -36,7 +39,8 @@ public interface APIRequestStock {
             @Field("jumlah") int jumlah,
             @Field("satuan") String satuan,
             @Field("min_pesan") int min_pesan,
-            @Field("waktu") int waktu
+            @Field("waktu") int waktu,
+            @Field("user") String user
     );
 
     @FormUrlEncoded

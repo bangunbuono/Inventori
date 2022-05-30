@@ -18,16 +18,18 @@ public interface APIRequestKomposisi {
     @FormUrlEncoded
     @POST("komposisiadd.php")
     Call<ResponseModel> addKomposisi(
-            @Field("table") String table,
-            @Field("komposisi") String komposisi,
+            @Field("user") String user,
+            @Field("bahan") String bahan,
             @Field("jumlah") int jumlah,
-            @Field("satuan") String satuan
+            @Field("satuan") String satuan,
+            @Field("menu") String menu
     );
 
     @FormUrlEncoded
     @POST("komposisiset.php")
     Call<ResponseModel> getKomposisi(
-            @Field("table") String table
+            @Field("menu") String menu,
+            @Field("user") String user
     );
 
     @FormUrlEncoded
@@ -39,9 +41,8 @@ public interface APIRequestKomposisi {
     @FormUrlEncoded
     @POST("komposisiupdate.php")
     Call<ResponseModel> updateKomposisi(
-            @Field("table") String table,
             @Field("id") int id,
-            @Field("komposisi") String komposisi,
+            @Field("bahan") String bahan,
             @Field("jumlah") int jumlah,
             @Field("satuan") String satuan
     );

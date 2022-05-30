@@ -9,21 +9,27 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface APIRequestMenu {
-    @GET("menuset.php")
-    Call<ResponseModel> showMenu();
+    @FormUrlEncoded
+    @POST("menuset.php")
+    Call<ResponseModel> showMenu(
+            @Field("user") String user
+    );
 
     @FormUrlEncoded
     @POST("menucreate.php")
     Call<ResponseModel> createMenu(
             @Field("menu") String menu,
             @Field("harga") int harga,
-            @Field("deskripsi") String deskripsi
+            @Field("deskripsi") String deskripsi,
+            @Field("user") String user
     );
 
     @FormUrlEncoded
     @POST("menudelete.php")
     Call<ResponseModel> deleteMenu(
-            @Field("id") int id
+            @Field("id") int id,
+            @Field("menu") String menu,
+            @Field("user") String user
     );
 
     @FormUrlEncoded

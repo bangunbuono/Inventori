@@ -19,6 +19,7 @@ import com.example.inventori.API.APIRequestMenu;
 import com.example.inventori.API.ServerConnection;
 import com.example.inventori.Activity.Menu.MenuSet;
 import com.example.inventori.Activity.Menu.MenuSetDetail;
+import com.example.inventori.Activity.User.UserSession;
 import com.example.inventori.R;
 import com.example.inventori.model.MenuModel;
 import com.example.inventori.model.ResponseModel;
@@ -35,6 +36,8 @@ public class AdapterMenuSet extends ArrayAdapter<MenuModel> {
     private List<MenuModel> menu;
     public TextView tvIdMenu, tvMenu;
     int index;
+    String menuName, user;
+    UserSession userSession;
 
     public AdapterMenuSet(Context context, List<MenuModel> list) {
         super(context, R.layout.menu_row,list);
@@ -45,6 +48,9 @@ public class AdapterMenuSet extends ArrayAdapter<MenuModel> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
+        userSession = new UserSession(context);
+        user = userSession.getUserDetail().get("username");
 
         LayoutInflater inflater =(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(R.layout.menu_row, parent, false);
@@ -64,17 +70,14 @@ public class AdapterMenuSet extends ArrayAdapter<MenuModel> {
         convertView.setOnLongClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             index = listMenu.get(position).getId();
-            builder.setMessage(index+". "+tvMenu.getText().toString());
+            menuName = listMenu.get(position).getMenu();
+            builder.setMessage(index+". "+menuName);
             builder.setPositiveButton("Hapus", (dialogInterface, i) -> {
+                System.out.println(menuName +"\n"+user);
                 deleteMenu();
-                deleteKomposisi();
                 Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        ((MenuSet)context).retrieveData();
-                    }
-                }, 500);
+                handler.postDelayed(() -> (
+                        (MenuSet)context).retrieveData(), 500);
             });
 
             builder.setNegativeButton("ubah", (dialogInterface, i) -> detailMenu());
@@ -87,35 +90,17 @@ public class AdapterMenuSet extends ArrayAdapter<MenuModel> {
     }
     private void deleteMenu(){
         APIRequestMenu dataMenu = ServerConnection.connection().create(APIRequestMenu.class);
-        Call<ResponseModel> deleteData = dataMenu.deleteMenu(index);
+        Call<ResponseModel> deleteData = dataMenu.deleteMenu(index, menuName, user);
         
         deleteData.enqueue(new Callback<ResponseModel>() {
             @Override
-            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
-                Toast.makeText(context, "Menu berhasil dihapus", Toast.LENGTH_SHORT).show();
+            public void onResponse(@NonNull Call<ResponseModel> call, Response<ResponseModel> response) {
+                Toast.makeText(context, "Berhasil menghapus menu", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
-                Toast.makeText(context, "gagal menghapus data"+t.getMessage(),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void deleteKomposisi(){
-        APIRequestKomposisi dataKomposisi = ServerConnection.connection().create(APIRequestKomposisi.class);
-        Call<ResponseModel> hapusKomposisi = dataKomposisi.deleteKomposisi(
-                tvMenu.getText().toString().trim().replaceAll("\\s","_"));
-        hapusKomposisi.enqueue(new Callback<ResponseModel>() {
-            @Override
-            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
-                Toast.makeText(context, "komposisi berhasil dihapus", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure(Call<ResponseModel> call, Throwable t) {
-                Toast.makeText(context, "komposisi gagal dihapus:"+t.getMessage(),
+                Toast.makeText(context, "Gagal menghapus menu: "+t.getMessage(),
                         Toast.LENGTH_SHORT).show();
             }
         });
@@ -127,7 +112,8 @@ public class AdapterMenuSet extends ArrayAdapter<MenuModel> {
 
         detailData.enqueue(new Callback<ResponseModel>() {
             @Override
-            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+            public void onResponse(@NonNull Call<ResponseModel> call, Response<ResponseModel> response) {
+                assert response.body() != null;
                 menu = response.body().getData();
 
                 int menuId = menu.get(0).getId();
@@ -141,14 +127,11 @@ public class AdapterMenuSet extends ArrayAdapter<MenuModel> {
                 intent.putExtra("menuPrice", menuPrice);
                 intent.putExtra("menuDesc", menuDesc);
                 context.startActivity(intent);
-
-                System.out.println(menuId +" "+menuName+ " "+menuPrice+ " "+menuDesc);
-
             }
 
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
-                Toast.makeText(context, "gagal menghapus data"+t.getMessage(),
+                Toast.makeText(context, "Gagal menghapus data "+t.getMessage(),
                         Toast.LENGTH_SHORT).show();
             }
         });

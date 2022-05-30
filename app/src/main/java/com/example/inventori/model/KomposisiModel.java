@@ -1,7 +1,13 @@
 package com.example.inventori.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class KomposisiModel {
-    private String komposisi,satuan;
+
+    @SerializedName("bahan")
+    private String komposisi;
+
+    private String satuan;
     private int jumlah, id;
 
     public KomposisiModel(int id, String komposisi, String satuan, int jumlah) {

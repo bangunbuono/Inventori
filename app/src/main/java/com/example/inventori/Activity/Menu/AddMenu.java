@@ -10,9 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.inventori.API.APIRequestKomposisi;
 import com.example.inventori.API.APIRequestMenu;
 import com.example.inventori.API.ServerConnection;
+import com.example.inventori.Activity.User.UserSession;
 import com.example.inventori.R;
 import com.example.inventori.model.ResponseModel;
 
@@ -23,14 +23,19 @@ import retrofit2.Response;
 public class AddMenu extends AppCompatActivity {
     EditText etMenuName, etMenuPrice, etMenuDesc;
     Button btnSaveMenu;
-    String menu,price,desc;
+    String menu,price,desc,user;
+    UserSession userSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_menu);
 
+        userSession = new UserSession(getApplicationContext());
+        user = userSession.getUserDetail().get("username");
+
         ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
         actionBar.setTitle("Tambah menu");
 
         etMenuDesc = findViewById(R.id.etMenuDesc);
@@ -57,75 +62,42 @@ public class AddMenu extends AppCompatActivity {
 
     private void addMenu(){
         APIRequestMenu dataMenu = ServerConnection.connection().create(APIRequestMenu.class);
-        Call<ResponseModel> addData = dataMenu.createMenu(menu, Integer.parseInt(price), desc);
+        Call<ResponseModel> addData = dataMenu.createMenu(menu, Integer.parseInt(price), desc, user);
 
         addData.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+                assert response.body() != null;
                 int code = response.body().getCode();
                 String pesan = response.body().getPesan();
 
-                Toast.makeText(AddMenu.this, "berhasil menyimpan menu" +"(" +code+ ")" +" "+ pesan,
+                if(code == 2){
+                    Toast.makeText(AddMenu.this, "Gagal: " + pesan,
+                            Toast.LENGTH_SHORT).show();
+                }else if(code == 0){
+                    Toast.makeText(AddMenu.this, "Gagal "+ pesan,
+                            Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(AddMenu.this, "berhasil menyimpan menu",
                         Toast.LENGTH_SHORT).show();
-                addTable();
-                setResult(RESULT_OK);
-
+                    setResult(RESULT_OK);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(AddMenu.this);
+                    builder.setTitle(menu);
+                    builder.setMessage("Atur komposisi?");
+                    builder.setNegativeButton("Nanti saja", (dialogInterface, i) -> finish());
+                    builder.setPositiveButton("Atur Komposisi", (dialogInterface, i) -> {
+                        Intent intent = new Intent(AddMenu.this, KomposisiSet.class);
+                        intent.putExtra("menu", menu);
+                        startActivity(intent);
+                        finish();
+                    });
+                    builder.show();
+                }
             }
 
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
-                Toast.makeText(AddMenu.this, "gagal simpan menu: "+t.getMessage(),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void addTable(){
-        APIRequestKomposisi dataKomposisi = ServerConnection.connection().create(APIRequestKomposisi.class);
-        Call<ResponseModel> createTable = dataKomposisi.createTable(
-                menu.trim().replaceAll("\\s","_"));
-
-        createTable.enqueue(new Callback<ResponseModel>() {
-            @Override
-            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(AddMenu.this);
-                builder.setTitle(menu);
-                builder.setMessage("Atur komposisi?");
-                builder.setNegativeButton("Nanti saja", (dialogInterface, i) -> finish());
-                builder.setPositiveButton("Atur Komposisi", (dialogInterface, i) -> {
-                    Intent intent = new Intent(AddMenu.this, KomposisiSet.class);
-                    intent.putExtra("menu", menu);
-                    startActivity(intent);
-                    finish();
-                });
-                builder.show();
-                Toast.makeText(AddMenu.this, "berhasil", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure(Call<ResponseModel> call, Throwable t) {
-                deleteMenu();
-                Toast.makeText(AddMenu.this, "gagal: "+t.getMessage(),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void deleteMenu(){
-        APIRequestMenu dataMenu = ServerConnection.connection().create(APIRequestMenu.class);
-        Call<ResponseModel> deleteData = dataMenu.deleteMenuByname(menu);
-
-        deleteData.enqueue(new Callback<ResponseModel>() {
-            @Override
-            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
-                Toast.makeText(AddMenu.this, "Menu gagal dibuat", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-
-            @Override
-            public void onFailure(Call<ResponseModel> call, Throwable t) {
-                Toast.makeText(AddMenu.this, "gagal menghapus data"+t.getMessage(),
+                Toast.makeText(AddMenu.this, "Gagal: "+t.getMessage(),
                         Toast.LENGTH_SHORT).show();
             }
         });

@@ -7,7 +7,9 @@ public class StocksModel {
     private int waktu;
     private int min_pesan;
     private int jumlah;
-    private String bahan_baku, satuan;
+    private String bahan_baku;
+    private String satuan;
+    private String user;
 
     public StocksModel(int id, int waktu, int min_pesan, int jumlah, String bahan_baku, String satuan) {
         this.id = id;
@@ -16,6 +18,14 @@ public class StocksModel {
         this.jumlah = jumlah;
         this.bahan_baku = bahan_baku;
         this.satuan = satuan;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 
     public int getJumlah() {
