@@ -4,25 +4,24 @@ import com.google.gson.annotations.SerializedName;
 
 public class KomposisiModel {
 
-    @SerializedName("bahan")
-    private String komposisi;
 
+    private String bahan;
     private String satuan;
     private int jumlah, id;
 
-    public KomposisiModel(int id, String komposisi, String satuan, int jumlah) {
-        this.komposisi = komposisi;
+    public KomposisiModel(int id, String bahan, String satuan, int jumlah) {
+        this.bahan = bahan;
         this.satuan = satuan;
         this.jumlah = jumlah;
         this.id = id;
     }
 
-    public String getKomposisi() {
-        return komposisi;
+    public String getBahan() {
+        return bahan;
     }
 
-    public void setKomposisi(String komposisi) {
-        this.komposisi = komposisi;
+    public void setBahan(String bahan) {
+        this.bahan = bahan;
     }
 
     public String getSatuan() {

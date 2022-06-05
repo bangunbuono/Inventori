@@ -7,7 +7,16 @@ public class ResponseModel {
     private int code;
     private String pesan, status;
     private List<MenuModel> data;
-    private List<KomposisiModel> komposisiModelList;
+    private List<KomposisiModel> komposisiModelList, komposisiOpsiList;
+
+    public List<KomposisiModel> getKomposisiOpsiList() {
+        return komposisiOpsiList;
+    }
+
+    public void setKomposisiOpsiList(List<KomposisiModel> komposisiOpsiList) {
+        this.komposisiOpsiList = komposisiOpsiList;
+    }
+
     private List<StocksModel> stocksModels;
     private ArrayList<RestockModel> stocks;
 

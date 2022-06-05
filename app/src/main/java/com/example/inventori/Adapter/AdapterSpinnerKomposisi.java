@@ -17,23 +17,23 @@ import java.util.List;
 
 public class AdapterSpinnerKomposisi extends ArrayAdapter<RestockModel> {
     Context context;
-    List<RestockModel> restockList;
+    List<RestockModel> stockList;
 
     public AdapterSpinnerKomposisi(@NonNull Context context, @NonNull List<RestockModel> objects) {
         super(context, R.layout.restock_spinner, objects);
         this.context = context;
-        restockList = objects;
+        stockList = objects;
     }
 
     @Override
     public int getCount() {
-        return restockList.size();
+        return stockList.size();
     }
 
     @Nullable
     @Override
     public RestockModel getItem(int position) {
-        return restockList.get(position);
+        return stockList.get(position);
     }
 
     @NonNull
@@ -44,7 +44,7 @@ public class AdapterSpinnerKomposisi extends ArrayAdapter<RestockModel> {
                 LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = layoutInflater.inflate(R.layout.restock_spinner, parent,false);
 
-                RestockModel restock = restockList.get(position);
+                RestockModel restock = stockList.get(position);
                 if(restock != null)
                 {
                     TextView tvSpinner = convertView.findViewById(R.id.tvRestockSpinner);
@@ -69,13 +69,13 @@ public class AdapterSpinnerKomposisi extends ArrayAdapter<RestockModel> {
                 LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = layoutInflater.inflate(R.layout.restock_spinner, parent,false);
 
-                RestockModel restock = restockList.get(position);
-                if(restock != null)
+                RestockModel stock = stockList.get(position);
+                if(stock != null)
                 {
                     TextView tvSpinner = convertView.findViewById(R.id.tvRestockSpinner);
                     TextView tvRestockId = convertView.findViewById(R.id.tvRestockIdSpinner);
-                    tvSpinner.setText(restock.getBahan_baku());
-                    tvRestockId.setText(restock.getId()+"");
+                    tvSpinner.setText(stock.getBahan_baku());
+                    tvRestockId.setText(stock.getId()+"");
                 }
             }
 

@@ -16,12 +16,14 @@
         android:theme="@style/Theme.Inventori"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Activity.Menu.KomposisiEdit"
+            android:exported="false" />
+        <activity
             android:name=".Activity.User.RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".Activity.User.LoginActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false"></activity>
         <activity
             android:name=".Activity.Usage.UsageKomposisiDetail"
             android:exported="false" />

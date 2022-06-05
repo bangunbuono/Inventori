@@ -3,6 +3,7 @@ package com.example.inventori.Activity.Usage;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -43,7 +44,7 @@ public class UsageAutoFrag extends Fragment {
     AdapterUsageAuto adapterUsageAuto;
     List<MenuModel> menuModels = new ArrayList<>();
     List<KomposisiModel> listKomposisi;
-    String konfirmasi, pesanan, deskripsi, detail, user;
+    String konfirmasi, pesanan, detail, user;
     int jumlah;
     ArrayList<UsageMenuModel> orderList;
     UserSession userSession;
@@ -92,7 +93,6 @@ public class UsageAutoFrag extends Fragment {
                     if(menuModels.get(i).getQty() != 0){
                         jumlah = menuModels.get(i).getQty();
                         pesanan = menuModels.get(i).getMenu();
-                        deskripsi = pesanan.trim().replaceAll("\\s", "_");
                         for(int repetisi = 0; repetisi<jumlah;repetisi++){
                             UsageAutoApplication.orderList.add(new UsageMenuModel(pesanan, 1));
                         }
@@ -119,7 +119,7 @@ public class UsageAutoFrag extends Fragment {
 
         showData.enqueue(new Callback<ResponseModel>() {
             @Override
-            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
                 int code = response.body().getCode();
                 String pesan = response.body().getPesan();
 
@@ -131,7 +131,7 @@ public class UsageAutoFrag extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<ResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
                 Toast.makeText(getActivity(), "error: "+t.getMessage(), Toast.LENGTH_SHORT).show();
                 System.out.println(t.getMessage());
             }
@@ -144,12 +144,12 @@ public class UsageAutoFrag extends Fragment {
 
         order.enqueue(new Callback<ResponseModel>() {
             @Override
-            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
                 Toast.makeText(getActivity(), "berhasil memesan", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onFailure(Call<ResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
                 Toast.makeText(getActivity(), "gagal: "+t.getMessage(),
                         Toast.LENGTH_SHORT).show();
 

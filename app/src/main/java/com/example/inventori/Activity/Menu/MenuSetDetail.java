@@ -1,9 +1,11 @@
 package com.example.inventori.Activity.Menu;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,7 +35,7 @@ public class MenuSetDetail extends AppCompatActivity {
     List<KomposisiModel> komposisiModels;
     AdapterKomposisi adapterKomposisi;
     int id,harga, jumlah, komposisiId, i;
-    String menu,deskripsi, table, bahan, satuan, user;
+    String menu,deskripsi, bahan, satuan, user;
     UserSession userSession;
 
     @Override
@@ -62,6 +64,9 @@ public class MenuSetDetail extends AppCompatActivity {
         menu = intent.getStringExtra("menuName");
         deskripsi = intent.getStringExtra("menuDesc");
 
+        if(AdapterKomposisi.updateChange){
+            getKomposisi();
+        }
         getKomposisi();
 
         etDetailID.setText(id+"");
@@ -78,17 +83,17 @@ public class MenuSetDetail extends AppCompatActivity {
 
             for(i = 0; i<komposisiModels.size();i++) {
                 View view1 = lvKomposisiy.getChildAt(i);
-                EditText etIdBahan = view1.findViewById(R.id.etIdBahan);
-                EditText etBahan = view1.findViewById(R.id.etBahan);
-                EditText etJumlah = view1.findViewById(R.id.etJumlah);
-                EditText etSatuan = view1.findViewById(R.id.etSatuan);
+                EditText etIdBahan = view1.findViewById(R.id.tvIdBahan);
+                EditText etBahan = view1.findViewById(R.id.tvBahan);
+                EditText etJumlah = view1.findViewById(R.id.tvJumlah);
+                EditText etSatuan = view1.findViewById(R.id.tvSatuan);
 
                 komposisiId = Integer.parseInt(etIdBahan.getText().toString().trim());
                 bahan = etBahan.getText().toString().trim();
                 jumlah = Integer.parseInt(etJumlah.getText().toString().trim());
                 satuan = etSatuan.getText().toString().trim();
 
-                updateKomposisi();
+                //updateKomposisi();
             }
             if(!etBahany.getText().toString().trim().isEmpty() &&
                     !etJumlahy.getText().toString().trim().isEmpty() &&
@@ -131,14 +136,14 @@ public class MenuSetDetail extends AppCompatActivity {
 
         update.enqueue(new Callback<ResponseModel>() {
             @Override
-            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
                 finish();
                 Toast.makeText(MenuSetDetail.this, "Berhasil menyimpan",
                         Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onFailure(Call<ResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
                 Toast.makeText(MenuSetDetail.this, "Gagal: "+t.getMessage(),
                         Toast.LENGTH_SHORT).show();
             }
@@ -151,7 +156,7 @@ public class MenuSetDetail extends AppCompatActivity {
                 menu, user);
         komposisi.enqueue(new Callback<ResponseModel>() {
             @Override
-            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
                 assert response.body() != null;
                 komposisiModels = response.body().getKomposisiModelList();
                 if(komposisiModels != null) {
@@ -162,7 +167,7 @@ public class MenuSetDetail extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
                 Toast.makeText(MenuSetDetail.this, "gagal memuat: "+t.getMessage(),
                         Toast.LENGTH_SHORT).show();
                 System.out.println(t.getMessage());
@@ -176,7 +181,7 @@ public class MenuSetDetail extends AppCompatActivity {
                 user,bahan, jumlah, satuan, menu);
         tambahKompsisi.enqueue(new Callback<ResponseModel>() {
             @Override
-            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
                 etBahany.setText(null);
                 etJumlahy.setText(null);
                 etSatuany.setText(null);
@@ -188,28 +193,28 @@ public class MenuSetDetail extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
                 Toast.makeText(MenuSetDetail.this, "Komposisi gagal ditambahkan", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void updateKomposisi(){
-        APIRequestKomposisi dataKomposisi = ServerConnection.connection().create(APIRequestKomposisi.class);
-        Call<ResponseModel> ubahKomposisi = dataKomposisi.updateKomposisi(
-                komposisiId, bahan, jumlah, satuan);
-        ubahKomposisi.enqueue(new Callback<ResponseModel>() {
-            @Override
-            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
-                Toast.makeText(MenuSetDetail.this, "Berhasil merubah", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure(Call<ResponseModel> call, Throwable t) {
-                Toast.makeText(MenuSetDetail.this, "Gagal merubah: "+t.getMessage(),
-                        Toast.LENGTH_SHORT).show();
-                System.out.println(t.getMessage());
-            }
-        });
-    }
+//    private void updateKomposisi(){
+//        APIRequestKomposisi dataKomposisi = ServerConnection.connection().create(APIRequestKomposisi.class);
+//        Call<ResponseModel> ubahKomposisi = dataKomposisi.updateKomposisi(
+//                komposisiId, bahan, jumlah, satuan);
+//        ubahKomposisi.enqueue(new Callback<ResponseModel>() {
+//            @Override
+//            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+//                Toast.makeText(MenuSetDetail.this, "Berhasil merubah", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseModel> call, Throwable t) {
+//                Toast.makeText(MenuSetDetail.this, "Gagal merubah: "+t.getMessage(),
+//                        Toast.LENGTH_SHORT).show();
+//                System.out.println(t.getMessage());
+//            }
+//        });
+//    }
 }

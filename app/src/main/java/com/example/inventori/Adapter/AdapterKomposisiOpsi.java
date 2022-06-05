@@ -19,7 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.inventori.API.APIRequestKomposisi;
+import com.example.inventori.API.APIKomposisiOpsi;
 import com.example.inventori.API.APIRestock;
 import com.example.inventori.API.ServerConnection;
 import com.example.inventori.Activity.User.UserSession;
@@ -35,7 +35,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AdapterKomposisi extends ArrayAdapter<KomposisiModel> {
+public class AdapterKomposisiOpsi extends ArrayAdapter<KomposisiModel> {
     Context context;
     private List<KomposisiModel> komposisiModels;
     ArrayList<RestockModel> listBahan;
@@ -52,7 +52,7 @@ public class AdapterKomposisi extends ArrayAdapter<KomposisiModel> {
 
     public static boolean updateChange = false;
 
-    public AdapterKomposisi(Context context, List<KomposisiModel> objects) {
+    public AdapterKomposisiOpsi(Context context, List<KomposisiModel> objects) {
         super(context, R.layout.komposisi_row,objects);
 
         this.context = context;
@@ -136,7 +136,7 @@ public class AdapterKomposisi extends ArrayAdapter<KomposisiModel> {
     }
 
     private void updateKomposisi() {
-        APIRequestKomposisi komposisiData = ServerConnection.connection().create(APIRequestKomposisi.class);
+        APIKomposisiOpsi komposisiData = ServerConnection.connection().create(APIKomposisiOpsi.class);
         Call<ResponseModel> update = komposisiData.updateKomposisi(id, bahan,jumlah, satuan);
 
         update.enqueue(new Callback<ResponseModel>() {
@@ -156,12 +156,12 @@ public class AdapterKomposisi extends ArrayAdapter<KomposisiModel> {
     }
 
     private void deleteKomposisi() {
-        APIRequestKomposisi komposisiData = ServerConnection.connection().create(APIRequestKomposisi.class);
+        APIKomposisiOpsi komposisiData = ServerConnection.connection().create(APIKomposisiOpsi.class);
         Call<ResponseModel> deleteKomposisi = komposisiData.deleteKomposisi(id, user);
 
         deleteKomposisi.enqueue(new Callback<ResponseModel>() {
             @Override
-            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
                 String pesan = response.body().getPesan();
                 Toast.makeText(context, pesan, Toast.LENGTH_SHORT).show();
                 notifyDataSetChanged();
@@ -169,7 +169,7 @@ public class AdapterKomposisi extends ArrayAdapter<KomposisiModel> {
             }
 
             @Override
-            public void onFailure(Call<ResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseModel> call,@NonNull Throwable t) {
                 Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

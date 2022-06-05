@@ -7,10 +7,9 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
-public interface APIRequestKomposisi {
-
+public interface APIKomposisiOpsi {
     @FormUrlEncoded
-    @POST("komposisiadd.php")
+    @POST("komposisiopsiadd.php")
     Call<ResponseModel> addKomposisi(
             @Field("user") String user,
             @Field("bahan") String bahan,
@@ -20,21 +19,14 @@ public interface APIRequestKomposisi {
     );
 
     @FormUrlEncoded
-    @POST("komposisiset.php")
+    @POST("komposisiopsiset.php")
     Call<ResponseModel> getKomposisi(
             @Field("menu") String menu,
             @Field("user") String user
     );
 
     @FormUrlEncoded
-    @POST("komposisidelete.php")
-    Call<ResponseModel> deleteKomposisi(
-            @Field("id") int id,
-            @Field("user") String user
-    );
-
-    @FormUrlEncoded
-    @POST("komposisiupdate.php")
+    @POST("komposisiopsiupdate.php")
     Call<ResponseModel> updateKomposisi(
             @Field("id") int id,
             @Field("bahan") String bahan,
@@ -43,7 +35,14 @@ public interface APIRequestKomposisi {
     );
 
     @FormUrlEncoded
-    @POST("komposisicancel.php")
+    @POST("komposisiopsidelete.php")
+    Call<ResponseModel> deleteKomposisi(
+            @Field("id") int id,
+            @Field("user") String user
+    );
+
+    @FormUrlEncoded
+    @POST("komposisiopsicancel.php")
     Call<ResponseModel> cancelKomposisi(
             @Field("menu") String menu,
             @Field("user") String user

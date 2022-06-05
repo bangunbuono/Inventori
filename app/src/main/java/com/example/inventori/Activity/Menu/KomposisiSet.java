@@ -1,6 +1,7 @@
 package com.example.inventori.Activity.Menu;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -14,17 +15,20 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.inventori.API.APIKomposisiOpsi;
 import com.example.inventori.API.APIRequestKomposisi;
 import com.example.inventori.API.APIRestock;
 import com.example.inventori.API.ServerConnection;
 import com.example.inventori.Activity.User.UserSession;
 import com.example.inventori.Adapter.AdapterKomposisi;
+import com.example.inventori.Adapter.AdapterKomposisiOpsi;
 import com.example.inventori.Adapter.AdapterSpinnerKomposisi;
 import com.example.inventori.R;
 import com.example.inventori.model.KomposisiModel;
 import com.example.inventori.model.ResponseModel;
 import com.example.inventori.model.RestockModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -33,17 +37,18 @@ import retrofit2.Response;
 
 public class KomposisiSet extends AppCompatActivity {
 
-    EditText etJumlahx;
-    TextView tvKomposisi, tvSatuanx;
-    Spinner spinnerBahanx;
-    Button btnTambahKomposisi, btnSimpanKomposisi;
-    ListView lvKomposisi;
+    EditText etJumlahx, etJumlahx2;
+    TextView tvKomposisi, tvSatuanx, tvSatuanx2;
+    Spinner spinnerBahanx, spinnerBahanx2;
+    Button btnTambahKomposisi, btnTambahKomposisiOpsi, btnSimpanKomposisi, btnCancel;
+    ListView lvKomposisi, lvKomposisiOpsi;
     AdapterKomposisi adapterKomposisi;
-    public List<KomposisiModel> listKomposisi;
-    List<RestockModel> listBahan;
+    AdapterKomposisiOpsi adapterKomposisiOpsi;
+    List<KomposisiModel> listKomposisi, listKomposisiOpsi;
+    List<RestockModel> listBahan, namaBahan;
     AdapterSpinnerKomposisi adapterSpinnerBahan;
-    String bahan,satuan,menu, user;
-    int jumlah, i, komposisiId;
+    String bahan,satuan,menu, user, bahanOpsi, satuanOpsi;
+    int jumlah,jumlahOpsi, i, komposisiId;
     UserSession userSession;
 
     @Override
@@ -57,23 +62,34 @@ public class KomposisiSet extends AppCompatActivity {
         spinnerBahanx = findViewById(R.id.spinnerBahanx);
         etJumlahx = findViewById(R.id.etJumlahx);
         tvSatuanx = findViewById(R.id.tvSatuanx);
+        spinnerBahanx2 = findViewById(R.id.spinnerBahanx2);
+        etJumlahx2 = findViewById(R.id.etJumlahx2);
+        tvSatuanx2 = findViewById(R.id.tvSatuanx2);
         lvKomposisi = findViewById(R.id.lvKomposisi);
+        lvKomposisiOpsi = findViewById(R.id.lvKomposisiOpsi);
         tvKomposisi = findViewById(R.id.tvKomposisi);
         btnTambahKomposisi = findViewById(R.id.btnTambahKomposisi);
+        btnTambahKomposisiOpsi = findViewById(R.id.btnTambahKomposisiOpsi);
         btnSimpanKomposisi = findViewById(R.id.btnSimpanKomposisi);
+        btnCancel = findViewById(R.id.btnCancelKomposisi);
 
         Intent intent = getIntent();
         menu = intent.getStringExtra("menu");
-        tvKomposisi.setText("komposisi " + intent.getStringExtra("menu"));
+        tvKomposisi.setText(intent.getStringExtra("menu"));
 
         listBahan();
         spinnerBahanx.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                bahan = listBahan.get(i).getBahan_baku();
-                satuan = listBahan.get(i).getSatuan();
-                Toast.makeText(KomposisiSet.this, bahan + satuan, Toast.LENGTH_SHORT).show();
-                tvSatuanx.setText(satuan);
+                if (listBahan.get(i).getBahan_baku().equals("Pilih bahan")){
+                    bahan = listBahan.get(0).getBahan_baku();
+                    tvSatuanx.setText(listBahan.get(0).getSatuan());
+                }else {
+                    bahan = listBahan.get(i).getBahan_baku();
+                    satuan = listBahan.get(i).getSatuan();
+                    Toast.makeText(KomposisiSet.this, bahan + satuan, Toast.LENGTH_SHORT).show();
+                    tvSatuanx.setText(satuan);
+                }
             }
 
             @Override
@@ -81,6 +97,27 @@ public class KomposisiSet extends AppCompatActivity {
 
             }
         });
+
+        spinnerBahanx2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (listBahan.get(i).getBahan_baku().equals("Pilih bahan")){
+                    bahanOpsi = listBahan.get(0).getBahan_baku();
+                    tvSatuanx2.setText(listBahan.get(0).getSatuan());
+                }else {
+                    bahanOpsi = listBahan.get(i).getBahan_baku();
+                    satuanOpsi = listBahan.get(i).getSatuan();
+                    Toast.makeText(KomposisiSet.this, bahanOpsi + satuanOpsi, Toast.LENGTH_SHORT).show();
+                    tvSatuanx2.setText(satuanOpsi);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         btnTambahKomposisi.setOnClickListener(view -> {
 //            spinnerBahanx.setVisibility(View.VISIBLE);
 //            tvSatuanx.setVisibility(View.VISIBLE);
@@ -95,38 +132,62 @@ public class KomposisiSet extends AppCompatActivity {
             }
         });
 
-        btnSimpanKomposisi.setOnClickListener(view -> {
-            for(i = 0; i<listKomposisi.size();i++){
-                View view1 = lvKomposisi.getChildAt(i);
-                EditText etIdBahan = view1.findViewById(R.id.etIdBahan);
-                EditText etBahan = view1.findViewById(R.id.etBahan);
-                EditText etJumlah = view1.findViewById(R.id.etJumlah);
-                EditText etSatuan = view1.findViewById(R.id.etSatuan);
-
-                komposisiId = Integer.parseInt(etIdBahan.getText().toString().trim());
-                bahan = etBahan.getText().toString().trim();
-                jumlah = Integer.parseInt(etJumlah.getText().toString().trim());
-                satuan = etSatuan.getText().toString().trim();
-
-                updateKomposisi();
+        btnTambahKomposisiOpsi.setOnClickListener(view -> {
+            if(etJumlahx2.getText().toString().isEmpty()){
+                etJumlahx2.setError("harus diisi");
             }
-            if(!etJumlahx.getText().toString().trim().isEmpty()){
-                spinnerBahanx.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        bahan = listBahan.get(i).getBahan_baku();
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) {
-
-                    }
-                });
-                jumlah = Integer.parseInt(etJumlahx.getText().toString().trim());
-                addKomposisi();
+            else {
+                jumlahOpsi = Integer.parseInt(etJumlahx2.getText().toString().trim());
+                addKomposisiOpsi();
+                System.out.println(bahanOpsi+ jumlahOpsi+satuanOpsi);
             }
-            finish();
         });
+
+        btnSimpanKomposisi.setOnClickListener(view -> {
+            if(listKomposisi != null){
+                for(i = 0; i<listKomposisi.size();i++){
+                    View view1 = lvKomposisi.getChildAt(i);
+                    EditText etIdBahan = view1.findViewById(R.id.tvIdBahan);
+                    EditText etBahan = view1.findViewById(R.id.tvBahan);
+                    EditText etJumlah = view1.findViewById(R.id.tvJumlah);
+                    EditText etSatuan = view1.findViewById(R.id.tvSatuan);
+
+                    komposisiId = Integer.parseInt(etIdBahan.getText().toString().trim());
+                    bahan = etBahan.getText().toString().trim();
+                    jumlah = Integer.parseInt(etJumlah.getText().toString().trim());
+                    satuan = etSatuan.getText().toString().trim();
+
+                    updateKomposisi();
+                }
+                if(!etJumlahx.getText().toString().trim().isEmpty() ||
+                        !bahan.equals("Pilih bahan") || !satuan.equals("satuan")){
+                    int i = spinnerBahanx.getSelectedItemPosition();
+                    bahan = listBahan.get(i).getBahan_baku();
+                    satuan = tvSatuanx.getText().toString().trim();
+                    jumlah = Integer.parseInt(etJumlahx.getText().toString().trim());
+                    addKomposisi();
+                }
+                finish();
+            }
+
+        });
+
+        btnCancel.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(KomposisiSet.this);
+            builder.setTitle("Batalkan komposisi");
+            builder.setMessage("Pembatalan dapat menghapus semua komposisi" + "\n" +
+                    "konfimasi?");
+            builder.setNegativeButton("Tidak", (dialogInterface, i) -> {
+
+            });
+            builder.setPositiveButton("Iya", (dialogInterface, i) -> {
+                cancelKomposisi();
+                cancelKomposisiOpsi();
+                finish();
+            });
+            builder.show();
+        });
+
     }
 
     private void addKomposisi(){
@@ -143,9 +204,10 @@ public class KomposisiSet extends AppCompatActivity {
                     Toast.makeText(KomposisiSet.this, "Gagal menambahkan komposisi", Toast.LENGTH_SHORT).show();
                 }else {
                     etJumlahx.setText(null);
-//                tvSatuanx.setVisibility(View.GONE);
-//                etJumlahx.setVisibility(View.GONE);
-//                spinnerBahanx.setVisibility(View.GONE);
+                    spinnerBahanx.setSelection(0);
+                    tvSatuanx.setText(listBahan.get(i).getSatuan());
+                    bahan = "";
+                    satuan = "";
                     getKomposisi();
                     Toast.makeText(KomposisiSet.this, "Komposisi ditambahkan",
                             Toast.LENGTH_SHORT).show();
@@ -153,7 +215,7 @@ public class KomposisiSet extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(@NonNull Call<ResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
                 Toast.makeText(KomposisiSet.this, "Komposisi gagal ditambahkan",
                         Toast.LENGTH_SHORT).show();
             }
@@ -166,7 +228,7 @@ public class KomposisiSet extends AppCompatActivity {
                 menu, user);
         komposisi.enqueue(new Callback<ResponseModel>() {
             @Override
-            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
                 assert response.body() != null;
                 listKomposisi = response.body().getKomposisiModelList();
                 if (listKomposisi != null){
@@ -176,7 +238,7 @@ public class KomposisiSet extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
                 Toast.makeText(KomposisiSet.this, "gagal memuat: "+t.getMessage(),
                         Toast.LENGTH_SHORT).show();
                 System.out.println(t.getMessage());
@@ -190,12 +252,14 @@ public class KomposisiSet extends AppCompatActivity {
                 komposisiId, bahan, jumlah, satuan);
         ubahKomposisi.enqueue(new Callback<ResponseModel>() {
             @Override
-            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
+                bahan = "";
+                satuan = "";
                 Toast.makeText(KomposisiSet.this, "Berhasil merubah", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onFailure(Call<ResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
                 Toast.makeText(KomposisiSet.this, "Gagal merubah: "+t.getMessage(),
                         Toast.LENGTH_SHORT).show();
                 System.out.println(t.getMessage());
@@ -209,18 +273,114 @@ public class KomposisiSet extends AppCompatActivity {
 
         getData.enqueue(new Callback<ResponseModel>() {
             @Override
-            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
                 assert response.body() != null;
-                listBahan = response.body().getStocks();
+                namaBahan = new ArrayList<>();
+                listBahan = new ArrayList<>();
+                listBahan.add(0, new RestockModel(-1, "Pilih bahan", "satuan"));
+                namaBahan = response.body().getStocks();
+                for (int i = 0; i < namaBahan.size(); i++){
+                    listBahan.add(new RestockModel(namaBahan.get(i).getId(),
+                            namaBahan.get(i).getBahan_baku(),namaBahan.get(i).getSatuan()));
+                }
                 if(listBahan != null){
                     adapterSpinnerBahan = new AdapterSpinnerKomposisi(KomposisiSet.this,listBahan);
                     spinnerBahanx.setAdapter(adapterSpinnerBahan);
+                    spinnerBahanx2.setAdapter(adapterSpinnerBahan);
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
                 t.fillInStackTrace();
+            }
+        });
+    }
+
+    private void cancelKomposisi(){
+        APIRequestKomposisi cancelData = ServerConnection.connection().create(APIRequestKomposisi.class);
+        Call<ResponseModel> cancelKomposisi = cancelData.cancelKomposisi(menu, user);
+
+        cancelKomposisi.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseModel> call,@NonNull Throwable t) {
+
+            }
+        });
+    }
+
+    private void addKomposisiOpsi(){
+        APIKomposisiOpsi komposisiData = ServerConnection.connection().create(APIKomposisiOpsi.class);
+        Call<ResponseModel> addKomposisi = komposisiData.addKomposisi(
+                user, bahanOpsi,jumlahOpsi, satuanOpsi, menu);
+
+        addKomposisi.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseModel> call,@NonNull Response<ResponseModel> response) {
+                int code = response.body().getCode();
+                String pesan = response.body().getPesan();
+                if(code == 2){
+                    Toast.makeText(KomposisiSet.this, pesan, Toast.LENGTH_SHORT).show();
+                }else if(code == 0){
+                    Toast.makeText(KomposisiSet.this, pesan, Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(KomposisiSet.this, pesan, Toast.LENGTH_SHORT).show();
+                    etJumlahx2.setText(null);
+                    spinnerBahanx2.setSelection(0);
+                    getKomposisiOpsi();
+                }
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
+                t.fillInStackTrace();
+            }
+        });
+        etJumlahx2.setText(null);
+        spinnerBahanx2.setSelection(0);
+    }
+
+    private void getKomposisiOpsi(){
+        APIKomposisiOpsi komposisiData = ServerConnection.connection().create(APIKomposisiOpsi.class);
+        Call<ResponseModel> getData = komposisiData.getKomposisi(menu, user);
+
+        getData.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
+                listKomposisiOpsi = new ArrayList<>();
+                listKomposisiOpsi = response.body().getKomposisiOpsiList();
+                if( listKomposisiOpsi != null){
+                    adapterKomposisiOpsi = new AdapterKomposisiOpsi(KomposisiSet.this, listKomposisiOpsi);
+                    lvKomposisiOpsi.setAdapter(adapterKomposisiOpsi);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
+
+            }
+        });
+
+    }
+    private void cancelKomposisiOpsi(){
+        APIKomposisiOpsi komposisiData = ServerConnection.connection().create(APIKomposisiOpsi.class);
+        Call<ResponseModel> cancel = komposisiData.cancelKomposisi(menu, user);
+
+        cancel.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
+
             }
         });
     }

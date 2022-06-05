@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 
 import com.example.inventori.API.APIRequestKomposisi;
 import com.example.inventori.API.ServerConnection;
-import com.example.inventori.Activity.Menu.KomposisiSet;
 import com.example.inventori.Activity.User.UserSession;
 import com.example.inventori.R;
 import com.example.inventori.UsageAutoApplication;
@@ -33,7 +32,7 @@ public class AdapterOrderDetail extends ArrayAdapter<UsageMenuModel> {
     Context context;
     List<UsageMenuModel> orderList;
     List<KomposisiModel> listKomposisi = new ArrayList<>();
-    String detail, user;
+    String user;
     UserSession userSession;
 
     public AdapterOrderDetail(@NonNull Context context, @NonNull List<UsageMenuModel> objects) {
@@ -63,22 +62,24 @@ public class AdapterOrderDetail extends ArrayAdapter<UsageMenuModel> {
 
         komposisi.enqueue(new Callback<ResponseModel>() {
             @Override
-            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
                 listKomposisi = new ArrayList<>();
                 assert response.body() != null;
                 listKomposisi = response.body().getKomposisiModelList();
                 String bahanTotal = "komposisi: ";
-                for (int i = 0; i<listKomposisi.size(); i++){
-                    String bahan = listKomposisi.get(i).getKomposisi() + " "+
-                            listKomposisi.get(i).getJumlah() + " " +
-                            listKomposisi.get(i).getSatuan();
-                    bahanTotal = bahanTotal +"\n"+ bahan;
+                if(listKomposisi != null){
+                    for (int i = 0; i<listKomposisi.size(); i++){
+                        String bahan = listKomposisi.get(i).getBahan() + " "+
+                                listKomposisi.get(i).getJumlah() + " " +
+                                listKomposisi.get(i).getSatuan();
+                        bahanTotal = bahanTotal +"\n"+ bahan;
+                    }
+                    tvDeskripsiOrder.setText(bahanTotal);
                 }
-                tvDeskripsiOrder.setText(bahanTotal);
             }
 
             @Override
-            public void onFailure(Call<ResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
                 Toast.makeText(context, "gagal memuat: "+t.getMessage(),
                         Toast.LENGTH_SHORT).show();
                 System.out.println(t.getMessage());
