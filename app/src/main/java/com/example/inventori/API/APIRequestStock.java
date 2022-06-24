@@ -29,7 +29,9 @@ public interface APIRequestStock {
             @Field("jumlah") int jumlah,
             @Field("satuan") String satuan,
             @Field("min_pesan") int min_pesan,
-            @Field("waktu") int waktu
+            @Field("waktu") int waktu,
+            @Field("user") String user,
+            @Field("bahanBaru") String bahanBaru
     );
 
     @FormUrlEncoded

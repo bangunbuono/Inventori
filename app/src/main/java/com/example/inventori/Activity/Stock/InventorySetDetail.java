@@ -1,7 +1,9 @@
 package com.example.inventori.Activity.Stock;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -22,12 +24,17 @@ public class InventorySetDetail extends AppCompatActivity {
     EditText etStockName, etStockJumlah, etStockSatuan, etStockID, etStockWaktu, etStockMinPesan;
     Button btnStockSave;
     int id, waktu, min_pesan, jumlah;
-    String bahan_baku, satuan;
+    String bahan_baku,bahanBaru, satuan, user;
+    UserSession userSession;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory_set_detail);
+
+        userSession = new UserSession(getApplicationContext());
+        user = userSession.getUserDetail().get("username");
 
         etStockID = findViewById(R.id.etStockID);
         etStockJumlah = findViewById(R.id.etStockJumlah);
@@ -51,10 +58,11 @@ public class InventorySetDetail extends AppCompatActivity {
         etStockName.setText(bahan_baku);
         etStockMinPesan.setText(min_pesan+"");
         etStockJumlah.setText(jumlah+"");
+        System.out.println(bahan_baku);
 
         btnStockSave.setOnClickListener(view -> {
             id = Integer.parseInt(etStockID.getText().toString().trim());
-            bahan_baku = etStockName.getText().toString().trim();
+            bahanBaru = etStockName.getText().toString().trim();
             jumlah = Integer.parseInt(etStockJumlah.getText().toString().trim());
             waktu = Integer.parseInt(etStockWaktu.getText().toString().trim());
             min_pesan = Integer.parseInt(etStockMinPesan.getText().toString().trim());
@@ -67,17 +75,18 @@ public class InventorySetDetail extends AppCompatActivity {
 
     private void updateStock(){
         APIRequestStock stockData = ServerConnection.connection().create(APIRequestStock.class);
-        Call<ResponseModel> updataData = stockData.updateData(id,bahan_baku,jumlah,satuan,min_pesan,waktu);
+        Call<ResponseModel> updataData = stockData.updateData(
+                id,bahan_baku,jumlah,satuan,min_pesan,waktu,user,bahanBaru);
 
         updataData.enqueue(new Callback<ResponseModel>() {
             @Override
-            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
                 finish();
                 Toast.makeText(InventorySetDetail.this, "berhasil menyimpan", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onFailure(Call<ResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
                 Toast.makeText(InventorySetDetail.this, "gagal: "+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

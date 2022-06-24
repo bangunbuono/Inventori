@@ -50,4 +50,13 @@
         android:textColor="@color/black"
         android:id="@+id/tvDeskripsiOrder"/>
 
+    <Spinner
+        android:id="@+id/spinnerBahanDeskripsi"
+        android:autofillHints="name"
+        android:layout_margin="5dp"
+        android:layout_width="match_parent"
+        android:backgroundTint="#eaeaea"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp" />
+
 </LinearLayout>

@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
-import com.example.inventori.API.APIRequestKomposisi;
 import com.example.inventori.API.APIRequestMenu;
 import com.example.inventori.API.ServerConnection;
 import com.example.inventori.Activity.Menu.MenuSet;
@@ -71,10 +70,12 @@ public class AdapterMenuSet extends ArrayAdapter<MenuModel> {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             index = listMenu.get(position).getId();
             menuName = listMenu.get(position).getMenu();
-            builder.setMessage(index+". "+menuName);
+            builder.setMessage(menuName);
             builder.setPositiveButton("Hapus", (dialogInterface, i) -> {
                 System.out.println(menuName +"\n"+user);
                 deleteMenu();
+                listMenu.remove(position);
+                notifyDataSetChanged();
                 Handler handler = new Handler();
                 handler.postDelayed(() -> (
                         (MenuSet)context).retrieveData(), 500);
@@ -94,12 +95,12 @@ public class AdapterMenuSet extends ArrayAdapter<MenuModel> {
         
         deleteData.enqueue(new Callback<ResponseModel>() {
             @Override
-            public void onResponse(@NonNull Call<ResponseModel> call, Response<ResponseModel> response) {
+            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
                 Toast.makeText(context, "Berhasil menghapus menu", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onFailure(Call<ResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseModel> call,@NonNull Throwable t) {
                 Toast.makeText(context, "Gagal menghapus menu: "+t.getMessage(),
                         Toast.LENGTH_SHORT).show();
             }
@@ -112,7 +113,7 @@ public class AdapterMenuSet extends ArrayAdapter<MenuModel> {
 
         detailData.enqueue(new Callback<ResponseModel>() {
             @Override
-            public void onResponse(@NonNull Call<ResponseModel> call, Response<ResponseModel> response) {
+            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
                 assert response.body() != null;
                 menu = response.body().getData();
 
@@ -130,7 +131,7 @@ public class AdapterMenuSet extends ArrayAdapter<MenuModel> {
             }
 
             @Override
-            public void onFailure(Call<ResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
                 Toast.makeText(context, "Gagal menghapus data "+t.getMessage(),
                         Toast.LENGTH_SHORT).show();
             }

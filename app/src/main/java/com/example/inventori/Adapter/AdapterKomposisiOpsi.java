@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 
 import com.example.inventori.API.APIKomposisiOpsi;
 import com.example.inventori.API.APIRestock;
@@ -37,7 +38,7 @@ import retrofit2.Response;
 
 public class AdapterKomposisiOpsi extends ArrayAdapter<KomposisiModel> {
     Context context;
-    private List<KomposisiModel> komposisiModels;
+    private List<KomposisiModel> komposisiOpsiList;
     ArrayList<RestockModel> listBahan;
     AdapterSpinnerKomposisi adapterSpinnerBahan;
     TextView tvBahan, tvSatuan, tvIdBahan, tvJumlah, tvSatuanx ;
@@ -48,7 +49,8 @@ public class AdapterKomposisiOpsi extends ArrayAdapter<KomposisiModel> {
     int index, jumlah, id;
     Spinner spinner;
     EditText etJumlah;
-    Button btnEdit, btndelete;
+    Button btnEdit, btndelete, btnDismiss;
+    CardView cvKomposisi;
 
     public static boolean updateChange = false;
 
@@ -56,7 +58,7 @@ public class AdapterKomposisiOpsi extends ArrayAdapter<KomposisiModel> {
         super(context, R.layout.komposisi_row,objects);
 
         this.context = context;
-        komposisiModels = objects;
+        komposisiOpsiList = objects;
     }
 
     @NonNull
@@ -73,19 +75,20 @@ public class AdapterKomposisiOpsi extends ArrayAdapter<KomposisiModel> {
         tvJumlah = convertView.findViewById(R.id.tvJumlah);
         tvSatuan = convertView.findViewById(R.id.tvSatuan);
         layoutKomposisi = convertView.findViewById(R.id.layoutKomposisi);
+        cvKomposisi = convertView.findViewById(R.id.cardKomposisi);
 
         dialog = new Dialog(context);
 
-        if(komposisiModels.get(position).getId() != -1){
-            tvIdBahan.setText(komposisiModels.get(position).getId()+"");
+        if(komposisiOpsiList.get(position).getId() != -1){
+            tvIdBahan.setText(komposisiOpsiList.get(position).getId()+"");
         }
-        tvBahan.setText(komposisiModels.get(position).getBahan());
-        tvJumlah.setText(komposisiModels.get(position).getJumlah()+"");
-        tvSatuan.setText(komposisiModels.get(position).getSatuan());
+        tvBahan.setText(komposisiOpsiList.get(position).getBahan());
+        tvJumlah.setText(komposisiOpsiList.get(position).getJumlah()+"");
+        tvSatuan.setText(komposisiOpsiList.get(position).getSatuan());
 
-        layoutKomposisi.setOnClickListener(view -> {
-            id = komposisiModels.get(position).getId();
-            refBahan = komposisiModels.get(position).getBahan();
+        cvKomposisi.setOnClickListener(view -> {
+            id = komposisiOpsiList.get(position).getId();
+            refBahan = komposisiOpsiList.get(position).getBahan();
             listBahan();
             dialog.setContentView(R.layout.komposisi_dialog);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -96,9 +99,10 @@ public class AdapterKomposisiOpsi extends ArrayAdapter<KomposisiModel> {
             etJumlah = dialog.findViewById(R.id.etJumlahUtama);
             tvSatuanx = dialog.findViewById(R.id.tvSatuanUtama);
             btndelete = dialog.findViewById(R.id.btnDeleteKomposisi);
+            btnDismiss = dialog.findViewById(R.id.btnDismiss);
 
             tvBahan.setText(refBahan);
-            etJumlah.setText(komposisiModels.get(position).getJumlah()+"");
+            etJumlah.setText(komposisiOpsiList.get(position).getJumlah()+"");
 
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                @Override
@@ -121,13 +125,21 @@ public class AdapterKomposisiOpsi extends ArrayAdapter<KomposisiModel> {
                     jumlah = Integer.parseInt(etJumlah.getText().toString().trim());
                 }
                 updateKomposisi();
+                komposisiOpsiList.get(position).setJumlah(jumlah);
+                komposisiOpsiList.get(position).setBahan(bahan);
+                komposisiOpsiList.get(position).setSatuan(satuan);
+                notifyDataSetChanged();
                 dialog.dismiss();
             });
 
             btndelete.setOnClickListener(view1 -> {
                 deleteKomposisi();
+                komposisiOpsiList.remove(position);
+                notifyDataSetChanged();
                 dialog.dismiss();
             });
+
+            btnDismiss.setOnClickListener(view1 -> dialog.dismiss());
 
             dialog.show();
         });

@@ -19,6 +19,7 @@ import java.util.List;
 public class AdapterUsageAuto extends ArrayAdapter<MenuModel> {
     Context context;
     List<MenuModel> list;
+
     public AdapterUsageAuto(Context context, List<MenuModel> objects) {
         super(context, R.layout.usage_auto_row,objects);
 

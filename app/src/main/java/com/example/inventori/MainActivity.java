@@ -61,7 +61,9 @@ public class MainActivity extends AppCompatActivity {
             moveToLogin();
         });
 
-        tvUser.setText(user.replace(user.charAt(0), user.toUpperCase().charAt(0))+"'s Home");
+        if(user!=null){
+            tvUser.setText(user.replace(user.charAt(0), user.toUpperCase().charAt(0))+"'s Home");
+        }
         navView.setItemHorizontalTranslationEnabled(true);
 
         fragmentManager = getSupportFragmentManager();

@@ -26,7 +26,8 @@
             android:exported="false"></activity>
         <activity
             android:name=".Activity.Usage.UsageKomposisiDetail"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".Activity.Usage.InventUsage"/>
         <activity
             android:name=".Activity.Stock.AddStock"
             android:exported="false" />

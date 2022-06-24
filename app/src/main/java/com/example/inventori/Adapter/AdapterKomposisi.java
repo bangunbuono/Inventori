@@ -1,5 +1,6 @@
 package com.example.inventori.Adapter;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 
 import com.example.inventori.API.APIRequestKomposisi;
 import com.example.inventori.API.APIRestock;
@@ -37,7 +39,7 @@ import retrofit2.Response;
 
 public class AdapterKomposisi extends ArrayAdapter<KomposisiModel> {
     Context context;
-    private List<KomposisiModel> komposisiModels;
+    List<KomposisiModel> komposisiModels;
     ArrayList<RestockModel> listBahan;
     AdapterSpinnerKomposisi adapterSpinnerBahan;
     TextView tvBahan, tvSatuan, tvIdBahan, tvJumlah, tvSatuanx ;
@@ -48,9 +50,8 @@ public class AdapterKomposisi extends ArrayAdapter<KomposisiModel> {
     int index, jumlah, id;
     Spinner spinner;
     EditText etJumlah;
-    Button btnEdit, btndelete;
-
-    public static boolean updateChange = false;
+    Button btnEdit, btndelete,btnDismiss;
+    CardView cvKomposisi;
 
     public AdapterKomposisi(Context context, List<KomposisiModel> objects) {
         super(context, R.layout.komposisi_row,objects);
@@ -73,6 +74,7 @@ public class AdapterKomposisi extends ArrayAdapter<KomposisiModel> {
         tvJumlah = convertView.findViewById(R.id.tvJumlah);
         tvSatuan = convertView.findViewById(R.id.tvSatuan);
         layoutKomposisi = convertView.findViewById(R.id.layoutKomposisi);
+        cvKomposisi = convertView.findViewById(R.id.cardKomposisi);
 
         dialog = new Dialog(context);
 
@@ -83,7 +85,7 @@ public class AdapterKomposisi extends ArrayAdapter<KomposisiModel> {
         tvJumlah.setText(komposisiModels.get(position).getJumlah()+"");
         tvSatuan.setText(komposisiModels.get(position).getSatuan());
 
-        layoutKomposisi.setOnClickListener(view -> {
+        cvKomposisi.setOnClickListener(view -> {
             id = komposisiModels.get(position).getId();
             refBahan = komposisiModels.get(position).getBahan();
             listBahan();
@@ -96,22 +98,23 @@ public class AdapterKomposisi extends ArrayAdapter<KomposisiModel> {
             etJumlah = dialog.findViewById(R.id.etJumlahUtama);
             tvSatuanx = dialog.findViewById(R.id.tvSatuanUtama);
             btndelete = dialog.findViewById(R.id.btnDeleteKomposisi);
+            btnDismiss = dialog.findViewById(R.id.btnDismiss);
 
             tvBahan.setText(refBahan);
             etJumlah.setText(komposisiModels.get(position).getJumlah()+"");
 
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-               @Override
-               public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                   bahan = listBahan.get(i).getBahan_baku();
-                   satuan = listBahan.get(i).getSatuan();
-                   tvSatuanx.setText(satuan);
-               }
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    bahan = listBahan.get(i).getBahan_baku();
+                    satuan = listBahan.get(i).getSatuan();
+                    tvSatuanx.setText(satuan);
+                }
 
-               @Override
-               public void onNothingSelected(AdapterView<?> adapterView) {
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
 
-               }
+                }
             });
 
             btnEdit.setOnClickListener(view1 -> {
@@ -120,39 +123,34 @@ public class AdapterKomposisi extends ArrayAdapter<KomposisiModel> {
                 }else {
                     jumlah = Integer.parseInt(etJumlah.getText().toString().trim());
                 }
-                updateKomposisi();
+                komposisiModels.get(position).setBahan(bahan);
+                komposisiModels.get(position).setJumlah(jumlah);
+                komposisiModels.get(position).setSatuan(satuan);
+                notifyDataSetChanged();
+                //updateKomposisi();
                 dialog.dismiss();
             });
 
             btndelete.setOnClickListener(view1 -> {
+                komposisiModels.remove(position);
+                notifyDataSetChanged();
                 deleteKomposisi();
                 dialog.dismiss();
             });
 
-            dialog.show();
+            btnDismiss.setOnClickListener(view1 -> {
+                dialog.dismiss();
+            });
+
+
+            if(!((Activity)context).isFinishing()){
+                dialog.show();
+            }
+
+
         });
 
         return convertView;
-    }
-
-    private void updateKomposisi() {
-        APIRequestKomposisi komposisiData = ServerConnection.connection().create(APIRequestKomposisi.class);
-        Call<ResponseModel> update = komposisiData.updateKomposisi(id, bahan,jumlah, satuan);
-
-        update.enqueue(new Callback<ResponseModel>() {
-            @Override
-            public void onResponse(@NonNull Call<ResponseModel> call,@NonNull Response<ResponseModel> response) {
-                String pesan = response.body().getPesan();
-                Toast.makeText(context, pesan, Toast.LENGTH_SHORT).show();
-                notifyDataSetChanged();
-                updateChange = true;
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
-
-            }
-        });
     }
 
     private void deleteKomposisi() {
@@ -161,15 +159,15 @@ public class AdapterKomposisi extends ArrayAdapter<KomposisiModel> {
 
         deleteKomposisi.enqueue(new Callback<ResponseModel>() {
             @Override
-            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
                 String pesan = response.body().getPesan();
                 Toast.makeText(context, pesan, Toast.LENGTH_SHORT).show();
                 notifyDataSetChanged();
-                updateChange = true;
+                dialog.dismiss();
             }
 
             @Override
-            public void onFailure(Call<ResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
                 Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -183,6 +181,7 @@ public class AdapterKomposisi extends ArrayAdapter<KomposisiModel> {
             @Override
             public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
                 listBahan = new ArrayList<>();
+                assert response.body() != null;
                 listBahan = response.body().getStocks();
                 if(listBahan != null){
                     adapterSpinnerBahan = new AdapterSpinnerKomposisi(context, listBahan);
@@ -192,8 +191,6 @@ public class AdapterKomposisi extends ArrayAdapter<KomposisiModel> {
                         if (data.equals(refBahan)){
                             index = i;
                             break;
-                        }else {
-                            continue;
                         }
                     }
                     spinner.setSelection(index);

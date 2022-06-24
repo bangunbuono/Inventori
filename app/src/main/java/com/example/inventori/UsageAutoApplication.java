@@ -11,11 +11,13 @@ public class UsageAutoApplication extends Application {
 
     public static ArrayList<UsageMenuModel> orderList;
     public static ArrayList<KomposisiModel> komposisiList;
+    public static ArrayList<KomposisiModel> opsiKomposisi;
 
     @Override
     public void onCreate() {
         super.onCreate();
         orderList = new ArrayList<>();
         komposisiList = new ArrayList<>();
+        opsiKomposisi = new ArrayList<>();
     }
 }

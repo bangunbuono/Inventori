@@ -147,10 +147,10 @@ public class KomposisiSet extends AppCompatActivity {
             if(listKomposisi != null){
                 for(i = 0; i<listKomposisi.size();i++){
                     View view1 = lvKomposisi.getChildAt(i);
-                    EditText etIdBahan = view1.findViewById(R.id.tvIdBahan);
-                    EditText etBahan = view1.findViewById(R.id.tvBahan);
-                    EditText etJumlah = view1.findViewById(R.id.tvJumlah);
-                    EditText etSatuan = view1.findViewById(R.id.tvSatuan);
+                    TextView etIdBahan = view1.findViewById(R.id.tvIdBahan);
+                    TextView etBahan = view1.findViewById(R.id.tvBahan);
+                    TextView etJumlah = view1.findViewById(R.id.tvJumlah);
+                    TextView etSatuan = view1.findViewById(R.id.tvSatuan);
 
                     komposisiId = Integer.parseInt(etIdBahan.getText().toString().trim());
                     bahan = etBahan.getText().toString().trim();
@@ -353,6 +353,7 @@ public class KomposisiSet extends AppCompatActivity {
         getData.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
+                assert listKomposisiOpsi != null;
                 listKomposisiOpsi = new ArrayList<>();
                 listKomposisiOpsi = response.body().getKomposisiOpsiList();
                 if( listKomposisiOpsi != null){

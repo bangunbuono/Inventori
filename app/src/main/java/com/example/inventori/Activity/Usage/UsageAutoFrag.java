@@ -1,5 +1,6 @@
 package com.example.inventori.Activity.Usage;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -102,7 +103,8 @@ public class UsageAutoFrag extends Fragment {
                     //konfirmOrder();
                 }
                 startActivity(new Intent(getActivity(), UsageKomposisiDetail.class));
-                adapterUsageAuto.notifyDataSetChanged();
+                getActivity().finish();
+//                adapterUsageAuto.notifyDataSetChanged();
 
             });
             builder.setNegativeButton(
@@ -124,10 +126,12 @@ public class UsageAutoFrag extends Fragment {
                 String pesan = response.body().getPesan();
 
                 menuModels = response.body().getData();
-                adapterUsageAuto = new AdapterUsageAuto(getActivity(), menuModels);
-                lvUsageAuto.setAdapter(adapterUsageAuto);
-                Toast.makeText(getActivity(),
-                        "success: " +"(" +code+ ")" +" "+ pesan, Toast.LENGTH_SHORT).show();
+                if(menuModels!= null){
+                    adapterUsageAuto = new AdapterUsageAuto(getActivity(), menuModels);
+                    lvUsageAuto.setAdapter(adapterUsageAuto);
+                    Toast.makeText(getActivity(),
+                            "success: " +"(" +code+ ")" +" "+ pesan, Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -138,23 +142,23 @@ public class UsageAutoFrag extends Fragment {
         });
     }
 
-    private void konfirmOrder(){
-        APIUsageAuto usageData = ServerConnection.connection().create(APIUsageAuto.class);
-        Call<ResponseModel> order = usageData.usage(pesanan.trim().replaceAll("\\s","_"),jumlah);
-
-        order.enqueue(new Callback<ResponseModel>() {
-            @Override
-            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
-                Toast.makeText(getActivity(), "berhasil memesan", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
-                Toast.makeText(getActivity(), "gagal: "+t.getMessage(),
-                        Toast.LENGTH_SHORT).show();
-
-            }
-        });
-    }
+//    private void konfirmOrder(){
+//        APIUsageAuto usageData = ServerConnection.connection().create(APIUsageAuto.class);
+//        Call<ResponseModel> order = usageData.usage(pesanan.trim().replaceAll("\\s","_"),jumlah);
+//
+//        order.enqueue(new Callback<ResponseModel>() {
+//            @Override
+//            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
+//                Toast.makeText(getActivity(), "berhasil memesan", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
+//                Toast.makeText(getActivity(), "gagal: "+t.getMessage(),
+//                        Toast.LENGTH_SHORT).show();
+//
+//            }
+//        });
+//    }
 
 }

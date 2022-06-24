@@ -13,7 +13,6 @@ import com.example.inventori.API.APIAccounts;
 import com.example.inventori.API.ServerConnection;
 import com.example.inventori.MainActivity;
 import com.example.inventori.R;
-import com.example.inventori.UsageAutoApplication;
 import com.example.inventori.model.ResponseModel;
 
 import retrofit2.Call;

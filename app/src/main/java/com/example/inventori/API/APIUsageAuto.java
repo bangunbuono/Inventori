@@ -11,7 +11,15 @@ public interface APIUsageAuto {
     @FormUrlEncoded
     @POST("usageauto.php")
     Call<ResponseModel> usage(
-            @Field("table") String table,
-            @Field("qty") int qty
+            @Field("menu") String menu,
+            @Field("user") String user
+    );
+
+    @FormUrlEncoded
+    @POST("usageautoopsi.php")
+    Call<ResponseModel> usageOpsi(
+            @Field("menu") String menu,
+            @Field("user") String user,
+            @Field("bahan") String bahan
     );
 }

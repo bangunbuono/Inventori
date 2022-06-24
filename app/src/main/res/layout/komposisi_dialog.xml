@@ -4,7 +4,8 @@
     android:layout_height="250dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -70,7 +71,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="serif"
-                    android:text="hapus"
+                    android:text="Batal"
+                    android:textAllCaps="false"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:layout_marginLeft="10dp"
@@ -86,7 +88,8 @@
                     android:fontFamily="serif"
                     android:layout_marginRight="10dp"
                     android:layout_marginLeft="10dp"
-                    android:text="hapus"
+                    android:text="Hapus"
+                    android:textAllCaps="false"
                     android:textStyle="bold"
                     android:textColor="@color/black"
                     android:backgroundTint="@color/white"
@@ -98,7 +101,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="serif"
-                    android:text="simpan"
+                    android:text="Simpan"
+                    android:textAllCaps="false"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:layout_marginRight="10dp"
@@ -106,8 +110,6 @@
                     android:backgroundTint="@color/white"
                     android:outlineSpotShadowColor="@color/white"
                     app:cornerRadius="15dp" />
-
-
 
             </LinearLayout>
 

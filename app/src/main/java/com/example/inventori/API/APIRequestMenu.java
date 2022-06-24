@@ -48,8 +48,10 @@ public interface APIRequestMenu {
     @POST("menuupdate.php")
     Call<ResponseModel> updateMenu(
             @Field("id") int id,
-            @Field("menu") String menu,
+            @Field("menuBaru") String menuBaru,
             @Field("harga") int harga,
-            @Field("deskripsi") String deskripsi
+            @Field("deskripsi") String deskripsi,
+            @Field("user") String user,
+            @Field("menu") String menu
     );
 }
