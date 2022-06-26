@@ -1,32 +1,27 @@
 package com.example.inventori.Activity.Usage;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.inventori.API.APIRequestKomposisi;
 import com.example.inventori.API.APIRequestMenu;
-import com.example.inventori.API.APIUsageAuto;
 import com.example.inventori.API.ServerConnection;
 import com.example.inventori.Activity.User.UserSession;
 import com.example.inventori.Adapter.AdapterUsageAuto;
 import com.example.inventori.R;
 import com.example.inventori.UsageAutoApplication;
-import com.example.inventori.model.KomposisiModel;
 import com.example.inventori.model.MenuModel;
 import com.example.inventori.model.ResponseModel;
 import com.example.inventori.model.UsageMenuModel;
@@ -43,12 +38,12 @@ public class UsageAutoFrag extends Fragment {
     ListView lvUsageAuto;
     Button btnOrder;
     AdapterUsageAuto adapterUsageAuto;
-    List<MenuModel> menuModels = new ArrayList<>();
-    List<KomposisiModel> listKomposisi;
-    String konfirmasi, pesanan, detail, user;
+    List<MenuModel> menuModels;
+    String konfirmasi, pesanan, user;
     int jumlah;
-    ArrayList<UsageMenuModel> orderList;
     UserSession userSession;
+    public static LinearLayout layoutItem;
+    public static TextView tvItem;
 
     public UsageAutoFrag() {
         // Required empty public constructor
@@ -69,8 +64,12 @@ public class UsageAutoFrag extends Fragment {
         userSession = new UserSession(getActivity());
         user = userSession.getUserDetail().get("username");
 
+        menuModels = new ArrayList<>();
+
         lvUsageAuto = view.findViewById(R.id.lvUsageAuto1);
         btnOrder = view.findViewById(R.id.btnOrder1);
+        layoutItem = view.findViewById(R.id.layoutItemAuto);
+        tvItem = view.findViewById(R.id.tvTotalStockAuto);
 
         getList();
 
@@ -99,7 +98,6 @@ public class UsageAutoFrag extends Fragment {
                         }
                         menuModels.get(i).setQty(0);
                     }
-
                     //konfirmOrder();
                 }
                 startActivity(new Intent(getActivity(), UsageKomposisiDetail.class));

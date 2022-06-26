@@ -1,5 +1,6 @@
 package com.example.inventori.Activity.Usage;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -20,8 +22,8 @@ import com.example.inventori.API.APIRequestStock;
 import com.example.inventori.API.APIRestock;
 import com.example.inventori.API.ServerConnection;
 import com.example.inventori.Activity.User.UserSession;
-import com.example.inventori.Adapter.AdapterKomposisi;
 import com.example.inventori.Adapter.AdapterSpinnerRestock;
+import com.example.inventori.Adapter.AdapterUsageManualFrag;
 import com.example.inventori.R;
 import com.example.inventori.model.KomposisiModel;
 import com.example.inventori.model.ResponseModel;
@@ -39,18 +41,23 @@ public class UsageManualFrag extends Fragment {
     Spinner spinner;
     ArrayList<RestockModel> stockList = new ArrayList<>();
     ArrayList<KomposisiModel> manualUsageList;
-    ArrayList<Integer> listId;
+    public static ArrayList<Integer> listId;
     ListView lvManualUsage;
-    AdapterKomposisi adapterKomposisi;
+    AdapterUsageManualFrag adapterList;
     TextView tvSatuanStock;
+    @SuppressLint("StaticFieldLeak")
+    public static TextView totalItem;
     EditText etJumlahStock;
+    @SuppressLint("StaticFieldLeak")
+    public static LinearLayout layoutItem;
     AdapterSpinnerRestock adapter;
     Button btnConfirm, btnAddManualList;
     String user, bahan, satuan;
     UserSession userSession;
-    int id, jumlah;
+    int id, jumlah, idx, jumlahx;
 
     public UsageManualFrag() {
+        checkItem();
         // Required empty public constructor
     }
 
@@ -69,19 +76,21 @@ public class UsageManualFrag extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_usage_manual, container, false);
 
+        layoutItem = view.findViewById(R.id.layoutItemManual);
         spinner = view.findViewById(R.id.spinnerManual);
         tvSatuanStock = view.findViewById(R.id.tvManual);
         btnConfirm = view.findViewById(R.id.btnManual);
         etJumlahStock = view.findViewById(R.id.etManual);
         btnAddManualList = view.findViewById(R.id.btnAddManualList);
         lvManualUsage = view.findViewById(R.id.lvManualUsage);
+        totalItem = view.findViewById(R.id.tvTotalStockManual);
 
         manualUsageList = new ArrayList<>();
         listId = new ArrayList<>();
-        adapterKomposisi = new AdapterKomposisi(getActivity(), manualUsageList);
+        adapterList = new AdapterUsageManualFrag(getActivity(), manualUsageList);
 
         if(manualUsageList!=null){
-            lvManualUsage.setAdapter(adapterKomposisi);
+            lvManualUsage.setAdapter(adapterList);
         }
 
         restockList();
@@ -109,9 +118,10 @@ public class UsageManualFrag extends Fragment {
                     jumlah = Integer.parseInt(etJumlahStock.getText().toString().trim());
                     manualUsageList.add(new KomposisiModel(id, bahan, satuan, jumlah));
                     listId.add(id);
-                    adapterKomposisi.notifyDataSetChanged();
+                    adapterList.notifyDataSetChanged();
                     etJumlahStock.setText(null);
                     spinner.setSelection(0);
+                    checkItem();
                 }
                 else {
                     Toast.makeText(getActivity(), "Bahan sudah ada", Toast.LENGTH_SHORT).show();
@@ -119,10 +129,29 @@ public class UsageManualFrag extends Fragment {
             }
         });
         btnConfirm.setOnClickListener(view1 -> {
+            if(manualUsageList!= null){
+                for(int i =0; i<manualUsageList.size();i++){
+                    idx = manualUsageList.get(i).getId();
+                    jumlahx = manualUsageList.get(i).getJumlah();
+                    stockUsage();
+                }
+            }
+            getActivity().finish();
 
-            //restockAdd();
         });
         return view;
+    }
+
+    public void checkItem(){
+        if(manualUsageList!=null){
+            if(manualUsageList.size()!=0){
+                layoutItem.setVisibility(View.VISIBLE);
+                totalItem.setText("Total " + manualUsageList.size() + " item");
+            }
+            else {
+                layoutItem.setVisibility(View.GONE);
+            }
+        }
     }
 
     private void restockList(){
@@ -145,9 +174,9 @@ public class UsageManualFrag extends Fragment {
         });
     }
 
-    private void restockAdd(){
+    private void stockUsage(){
         APIRequestStock stockData = ServerConnection.connection().create(APIRequestStock.class);
-        Call<ResponseModel> minusStock = stockData.minStocks(id,jumlah);
+        Call<ResponseModel> minusStock = stockData.minStocks(idx,jumlahx);
 
         minusStock.enqueue(new Callback<ResponseModel>() {
             @Override

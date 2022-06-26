@@ -1,5 +1,6 @@
 package com.example.inventori.Adapter;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -14,16 +15,14 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 
-import com.example.inventori.API.APIRequestKomposisi;
 import com.example.inventori.API.APIRestock;
 import com.example.inventori.API.ServerConnection;
-import com.example.inventori.Activity.Restock.InventRestock;
+import com.example.inventori.Activity.Usage.UsageManualFrag;
 import com.example.inventori.Activity.User.UserSession;
 import com.example.inventori.R;
 import com.example.inventori.model.KomposisiModel;
@@ -37,7 +36,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AdapterRestock extends ArrayAdapter<KomposisiModel> {
+public class AdapterUsageManualFrag extends ArrayAdapter<KomposisiModel> {
     Context context;
     List<KomposisiModel> komposisiModels;
     ArrayList<RestockModel> listBahan;
@@ -53,7 +52,7 @@ public class AdapterRestock extends ArrayAdapter<KomposisiModel> {
     Button btnEdit, btndelete,btnDismiss;
     CardView cvKomposisi;
 
-    public AdapterRestock(Context context, List<KomposisiModel> objects) {
+    public AdapterUsageManualFrag(Context context, List<KomposisiModel> objects) {
         super(context, R.layout.komposisi_row,objects);
 
         this.context = context;
@@ -86,12 +85,11 @@ public class AdapterRestock extends ArrayAdapter<KomposisiModel> {
         tvSatuan.setText(komposisiModels.get(position).getSatuan());
 
         cvKomposisi.setOnClickListener(view -> {
-
             id = komposisiModels.get(position).getId();
             refBahan = komposisiModels.get(position).getBahan();
+            listBahan();
             dialog.setContentView(R.layout.komposisi_dialog);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            listBahan();
 
             TextView tvBahan = dialog.findViewById(R.id.tvBahanUtama);
             btnEdit = dialog.findViewById(R.id.btnEditKomposisi);
@@ -129,57 +127,40 @@ public class AdapterRestock extends ArrayAdapter<KomposisiModel> {
                 komposisiModels.get(position).setSatuan(satuan);
                 notifyDataSetChanged();
                 //updateKomposisi();
-
                 dialog.dismiss();
             });
 
             btndelete.setOnClickListener(view1 -> {
+                UsageManualFrag.listId.remove(position);
                 komposisiModels.remove(position);
-                InventRestock.listId.remove(position);
-
                 notifyDataSetChanged();
-                if(komposisiModels.size()!=0){
-                   InventRestock.layoutRestock.setVisibility(View.VISIBLE);
-                   InventRestock.tvTotal.setText("Total "+komposisiModels.size()+" item");
-                }else {
-                    InventRestock.layoutRestock.setVisibility(View.GONE);
+                if(komposisiModels!=null){
+                    if(komposisiModels.size()!=0){
+                        UsageManualFrag.totalItem.setText("Total "+ komposisiModels.size()+" item");
+                        UsageManualFrag.layoutItem.setVisibility(View.VISIBLE);
+                    }else {
+                        UsageManualFrag.layoutItem.setVisibility(View.GONE);
+                    }
                 }
-//                deleteKomposisi();
                 dialog.dismiss();
             });
 
-            btnDismiss.setOnClickListener(view1 -> dialog.dismiss());
+            btnDismiss.setOnClickListener(view1 -> {
+                dialog.dismiss();
+            });
 
-            dialog.show();
+
+            if(!((Activity)context).isFinishing()){
+                dialog.show();
+            }
+
 
         });
 
         return convertView;
     }
 
-    private void deleteKomposisi() {
-        APIRequestKomposisi komposisiData = ServerConnection.connection().create(APIRequestKomposisi.class);
-        Call<ResponseModel> deleteKomposisi = komposisiData.deleteKomposisi(id, user);
-
-        deleteKomposisi.enqueue(new Callback<ResponseModel>() {
-            @Override
-            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
-                assert response.body() != null;
-                String pesan = response.body().getPesan();
-                Toast.makeText(context, pesan, Toast.LENGTH_SHORT).show();
-                notifyDataSetChanged();
-                dialog.dismiss();
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
-                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
     private void listBahan() {
-
         APIRestock stockData = ServerConnection.connection().create(APIRestock.class);
         Call<ResponseModel> getStock = stockData.getStock(user);
 

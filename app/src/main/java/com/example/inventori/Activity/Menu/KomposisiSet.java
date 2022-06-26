@@ -133,8 +133,11 @@ public class KomposisiSet extends AppCompatActivity {
         });
 
         btnTambahKomposisiOpsi.setOnClickListener(view -> {
-            if(etJumlahx2.getText().toString().isEmpty()){
+            if(etJumlahx2.getText().toString().isEmpty() || etJumlahx2.getText().toString().equals("")){
                 etJumlahx2.setError("harus diisi");
+            }
+            else if(bahanOpsi.equals("Pilih bahan")){
+                Toast.makeText(this, "Pilih bahan dulu", Toast.LENGTH_SHORT).show();
             }
             else {
                 jumlahOpsi = Integer.parseInt(etJumlahx2.getText().toString().trim());
@@ -159,8 +162,14 @@ public class KomposisiSet extends AppCompatActivity {
 
                     updateKomposisi();
                 }
-                if(!etJumlahx.getText().toString().trim().isEmpty() ||
-                        !bahan.equals("Pilih bahan") || !satuan.equals("satuan")){
+                if(etJumlahx.getText().toString().trim().isEmpty()){
+                    Toast.makeText(this, "isi jumlah dulu", Toast.LENGTH_SHORT).show();
+                }else if(etJumlahx.getText().toString().equals("")){
+                    Toast.makeText(this, "isi jumlah dulu", Toast.LENGTH_SHORT).show();
+                }
+                else if(bahan.equals("Pilih bahan")){
+                    Toast.makeText(this, "isi jumlah dulu", Toast.LENGTH_SHORT).show();
+                } else {
                     int i = spinnerBahanx.getSelectedItemPosition();
                     bahan = listBahan.get(i).getBahan_baku();
                     satuan = tvSatuanx.getText().toString().trim();
@@ -353,7 +362,6 @@ public class KomposisiSet extends AppCompatActivity {
         getData.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
-                assert listKomposisiOpsi != null;
                 listKomposisiOpsi = new ArrayList<>();
                 listKomposisiOpsi = response.body().getKomposisiOpsiList();
                 if( listKomposisiOpsi != null){

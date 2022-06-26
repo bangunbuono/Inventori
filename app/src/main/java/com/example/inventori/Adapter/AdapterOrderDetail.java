@@ -176,7 +176,6 @@ public class AdapterOrderDetail extends ArrayAdapter<UsageMenuModel> {
         });
 
         UsageKomposisiDetail.btnConfirm.setOnClickListener(view -> {
-            String series = UsageKomposisiDetail.orderSeries;
             int i;
             if(opsiList.size()==0){
                 for(i=0; i<orderList.size(); i++){

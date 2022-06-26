@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -27,6 +29,7 @@ import com.example.inventori.model.ResponseModel;
 import com.example.inventori.model.RestockModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,18 +39,21 @@ public class InventRestock extends AppCompatActivity {
 
     Spinner spinRestock;
     ArrayList<RestockModel> restockList = new ArrayList<>();
-    ArrayList<KomposisiModel> listRestock;
-    ArrayList<Integer> listId;
+    public ArrayList<KomposisiModel> listRestock;
+    public static ArrayList<Integer> listId;
     ListView lvRestock;
     AdapterRestock adapterStock;
-    TextView tvRestockSatuan, tvTotal;
+    TextView tvRestockSatuan;
+    @SuppressLint("StaticFieldLeak")
+    public static TextView tvTotal;
     EditText etRestockJumlah;
     AdapterSpinnerRestock adapterRestock;
     Button btnCollectRestock, btnAddRestocklist;
     String user, bahan, satuan;
     UserSession userSession;
     int id, jumlah, jumlahI, idI;
-    LinearLayout layoutRestock;
+    @SuppressLint("StaticFieldLeak")
+    public static LinearLayout layoutRestock;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +149,7 @@ public class InventRestock extends AppCompatActivity {
         }
     }
 
-    private void checkItem(){
+    public void checkItem(){
         if(listRestock!=null){
             if(listRestock.size()!=0){
                 layoutRestock.setVisibility(View.VISIBLE);

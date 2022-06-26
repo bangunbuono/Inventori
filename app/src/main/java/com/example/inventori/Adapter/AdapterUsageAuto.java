@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.inventori.Activity.Usage.UsageAutoFrag;
 import com.example.inventori.R;
 import com.example.inventori.model.MenuModel;
 
@@ -19,6 +20,7 @@ import java.util.List;
 public class AdapterUsageAuto extends ArrayAdapter<MenuModel> {
     Context context;
     List<MenuModel> list;
+    int item, price;
 
     public AdapterUsageAuto(Context context, List<MenuModel> objects) {
         super(context, R.layout.usage_auto_row,objects);
@@ -37,9 +39,11 @@ public class AdapterUsageAuto extends ArrayAdapter<MenuModel> {
         TextView tvQty = convertView.findViewById(R.id.tvQty);
         Button btnMin = convertView.findViewById(R.id.btnMin);
         Button btnPlus = convertView.findViewById(R.id.btnPlus);
+        TextView tvPrice = convertView.findViewById(R.id.tvProductPrice);
 
         tvProduct.setText(list.get(position).getMenu());
         tvQty.setText(list.get(position).getQty()+"");
+        tvPrice.setText(String.format("Rp. %d", list.get(position).getHarga()));
         int qty = list.get(position).getQty();
 
         btnMin.setOnClickListener(view -> {
@@ -48,13 +52,34 @@ public class AdapterUsageAuto extends ArrayAdapter<MenuModel> {
                 tvQty.setText(list.get(position).getQty()+"");
             }
             notifyDataSetChanged();
+            chectItem();
         });
 
         btnPlus.setOnClickListener(view -> {
             list.get(position).setQty(qty+1);
             tvQty.setText(list.get(position).getQty()+"");
             notifyDataSetChanged();
+            chectItem();
         });
         return convertView;
+    }
+
+    private void chectItem(){
+        if(list!=null){
+            item = 0;
+            price = 0;
+            for (int i =0; i<list.size();i++){
+                item += list.get(i).getQty();
+                price += list.get(i).getHarga() * list.get(i).getQty();
+            }
+
+            if (item!=0){
+                UsageAutoFrag.layoutItem.setVisibility(View.VISIBLE);
+                UsageAutoFrag.tvItem.setText(item + " item" + " = Rp. " + price );
+            }else {
+                UsageAutoFrag.layoutItem.setVisibility(View.GONE);
+            }
+        }
+
     }
 }
