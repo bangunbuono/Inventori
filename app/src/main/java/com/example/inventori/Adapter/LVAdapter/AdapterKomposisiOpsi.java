@@ -1,4 +1,4 @@
-package com.example.inventori.Adapter;
+package com.example.inventori.Adapter.LVAdapter;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -24,6 +24,7 @@ import com.example.inventori.API.APIKomposisiOpsi;
 import com.example.inventori.API.APIRestock;
 import com.example.inventori.API.ServerConnection;
 import com.example.inventori.Activity.User.UserSession;
+import com.example.inventori.Adapter.SpinnerAdapter.AdapterSpinnerKomposisi;
 import com.example.inventori.R;
 import com.example.inventori.model.KomposisiModel;
 import com.example.inventori.model.ResponseModel;

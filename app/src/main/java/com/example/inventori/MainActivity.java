@@ -10,8 +10,8 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.inventori.Activity.InventForecast;
-import com.example.inventori.Activity.InventReport;
+import com.example.inventori.Activity.Forecast.InventForecast;
+import com.example.inventori.Activity.Report.InventReport;
 import com.example.inventori.Activity.Restock.InventRestock;
 import com.example.inventori.Activity.Usage.InventUsage;
 import com.example.inventori.Activity.Stock.InventorySet;

@@ -1,4 +1,4 @@
-package com.example.inventori.Activity;
+package com.example.inventori.Activity.Forecast;
 
 import androidx.appcompat.app.AppCompatActivity;
 

@@ -1,5 +1,7 @@
 package com.example.inventori.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +10,55 @@ public class ResponseModel {
     private String pesan, status;
     private List<MenuModel> data;
     private List<KomposisiModel> komposisiModelList, komposisiOpsiList;
+    private List<MonthModel> bulan;
+    private List<RecordModel> record, recordDetail;
+    private List<StatModel> statmodel;
+
+    public List<StatModel> getStatmodel() {
+        return statmodel;
+    }
+
+    public void setStatmodel(List<StatModel> statmodel) {
+        this.statmodel = statmodel;
+    }
+
+    public void setStocks(ArrayList<RestockModel> stocks) {
+        this.stocks = stocks;
+    }
+
+    public List<RecordModel> getRecordDetail() {
+        return recordDetail;
+    }
+
+    public void setRecordDetail(List<RecordModel> recordDetail) {
+        this.recordDetail = recordDetail;
+    }
+
+    public List<RecordModel> getDate() {
+        return date;
+    }
+
+    public void setDate(List<RecordModel> date) {
+        this.date = date;
+    }
+
+    private List<RecordModel> date;
+
+    public List<RecordModel> getRecord() {
+        return record;
+    }
+
+    public void setRecord(List<RecordModel> record) {
+        this.record = record;
+    }
+
+    public List<MonthModel> getBulan() {
+        return bulan;
+    }
+
+    public void setBulan(List<MonthModel> bulan) {
+        this.bulan = bulan;
+    }
 
     public List<KomposisiModel> getKomposisiOpsiList() {
         return komposisiOpsiList;

@@ -1,4 +1,4 @@
-package com.example.inventori.Adapter;
+package com.example.inventori.Adapter.LVAdapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

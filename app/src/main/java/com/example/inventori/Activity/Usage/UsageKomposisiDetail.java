@@ -8,7 +8,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.inventori.Activity.User.UserSession;
-import com.example.inventori.Adapter.AdapterOrderDetail;
+import com.example.inventori.Adapter.LVAdapter.AdapterOrderDetail;
 import com.example.inventori.R;
 import com.example.inventori.UsageAutoApplication;
 import com.example.inventori.model.UsageMenuModel;
@@ -26,9 +26,9 @@ public class UsageKomposisiDetail extends AppCompatActivity {
     AdapterOrderDetail adapterOrderDetail;
     Button btnCancel;
     public static Button btnConfirm;
-    LocalDateTime time;
     String user, date;
-    public static String orderSeries;
+    public static String orderSeries, formatedTime, month;
+    public static LocalDateTime time;
     UserSession userSession;
 
     @Override
@@ -51,9 +51,13 @@ public class UsageKomposisiDetail extends AppCompatActivity {
         lvOrderDetail.setAdapter(adapterOrderDetail);
 
         time = LocalDateTime.now();
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyMMddhhmmss");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyMMddHHmmss");
+        DateTimeFormatter timeStamp = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter monthType = DateTimeFormatter.ofPattern("MM/yyyy");
+        month = monthType.format(time);
+        formatedTime = timeStamp.format(time);
         date = dtf.format(time);
-        orderSeries = "No. " +"B."+date;
+        orderSeries = "B."+date;
 
         tvOrder.setText(orderSeries);
     }

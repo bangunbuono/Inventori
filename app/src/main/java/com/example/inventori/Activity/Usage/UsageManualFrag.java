@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -18,17 +19,20 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.inventori.API.APIReport;
 import com.example.inventori.API.APIRequestStock;
 import com.example.inventori.API.APIRestock;
 import com.example.inventori.API.ServerConnection;
 import com.example.inventori.Activity.User.UserSession;
-import com.example.inventori.Adapter.AdapterSpinnerRestock;
-import com.example.inventori.Adapter.AdapterUsageManualFrag;
+import com.example.inventori.Adapter.SpinnerAdapter.AdapterSpinnerRestock;
+import com.example.inventori.Adapter.LVAdapter.AdapterUsageManualFrag;
 import com.example.inventori.R;
 import com.example.inventori.model.KomposisiModel;
 import com.example.inventori.model.ResponseModel;
 import com.example.inventori.model.RestockModel;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -52,9 +56,11 @@ public class UsageManualFrag extends Fragment {
     public static LinearLayout layoutItem;
     AdapterSpinnerRestock adapter;
     Button btnConfirm, btnAddManualList;
-    String user, bahan, satuan;
+    String user, bahan, satuan, date, orderSeries, bahanx, satuanx, formatedTime;
     UserSession userSession;
     int id, jumlah, idx, jumlahx;
+    LocalDateTime time;
+    String month;
 
     public UsageManualFrag() {
         checkItem();
@@ -129,14 +135,35 @@ public class UsageManualFrag extends Fragment {
             }
         });
         btnConfirm.setOnClickListener(view1 -> {
-            if(manualUsageList!= null){
-                for(int i =0; i<manualUsageList.size();i++){
-                    idx = manualUsageList.get(i).getId();
-                    jumlahx = manualUsageList.get(i).getJumlah();
-                    stockUsage();
+            time = LocalDateTime.now();
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyMMddHHmmss");
+            DateTimeFormatter timeStamp = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            DateTimeFormatter monthType = DateTimeFormatter.ofPattern("MM/yyyy");
+            month = monthType.format(time);
+            formatedTime = timeStamp.format(time);
+            date = dtf.format(time);
+            orderSeries = "B."+date;
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("Konfirmasi pesanan?");
+            builder.setPositiveButton("iya", (dialogInterface, i) -> {
+                if(manualUsageList!= null){
+                    record();
+                    for(i =0; i<manualUsageList.size();i++){
+                        idx = manualUsageList.get(i).getId();
+                        bahanx = manualUsageList.get(i).getBahan();
+                        jumlahx = manualUsageList.get(i).getJumlah();
+                        satuanx = manualUsageList.get(i).getSatuan();
+                        reportManualUsage();
+                        stockUsage();
+                    }
                 }
-            }
-            getActivity().finish();
+                getActivity().finish();
+            });
+            builder.setNegativeButton("batal", (dialogInterface, i) -> {
+
+            });
+            builder.show();
 
         });
         return view;
@@ -190,6 +217,41 @@ public class UsageManualFrag extends Fragment {
             public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
                 Toast.makeText(getActivity(), "gagal "+t.getMessage(),
                         Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void reportManualUsage(){
+        APIReport report = ServerConnection.connection().create(APIReport.class);
+        Call<ResponseModel> reportData = report.recordUsage(
+                orderSeries, bahanx, jumlahx, satuanx,"manual", user,formatedTime );
+
+        reportData.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseModel> call,@NonNull Response<ResponseModel> response) {
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseModel> call,@NonNull Throwable t) {
+
+            }
+        });
+    }
+
+    private void record(){
+        APIReport recordData = ServerConnection.connection().create(APIReport.class);
+        Call<ResponseModel> record = recordData.record(orderSeries,"barang keluar", formatedTime, user, month);
+
+        record.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
+
             }
         });
     }

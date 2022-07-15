@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.example.inventori.API.APIRequestStock;
 import com.example.inventori.API.ServerConnection;
 import com.example.inventori.Activity.User.UserSession;
-import com.example.inventori.Adapter.AdapterStocks;
+import com.example.inventori.Adapter.LVAdapter.AdapterStocks;
 import com.example.inventori.R;
 import com.example.inventori.model.ResponseModel;
 import com.example.inventori.model.StocksModel;

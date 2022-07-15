@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.example.inventori.API.APIRequestMenu;
 import com.example.inventori.API.ServerConnection;
 import com.example.inventori.Activity.User.UserSession;
-import com.example.inventori.Adapter.AdapterUsageAuto;
+import com.example.inventori.Adapter.LVAdapter.AdapterUsageAuto;
 import com.example.inventori.R;
 import com.example.inventori.UsageAutoApplication;
 import com.example.inventori.model.MenuModel;

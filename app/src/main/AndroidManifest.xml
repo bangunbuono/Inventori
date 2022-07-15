@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+
     <application
         android:name=".UsageAutoApplication"
         android:allowBackup="true"
@@ -16,6 +17,10 @@
         android:theme="@style/Theme.Inventori"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Activity.Report.ReportDetail"
+            android:exported="false"
+            android:parentActivityName=".Activity.Report.InventReport"/>
+        <activity
             android:name=".Activity.Menu.KomposisiEdit"
             android:exported="false" />
         <activity
@@ -23,11 +28,11 @@
             android:exported="false" />
         <activity
             android:name=".Activity.User.LoginActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".Activity.Usage.UsageKomposisiDetail"
             android:exported="false"
-            android:parentActivityName=".Activity.Usage.InventUsage"/>
+            android:parentActivityName=".Activity.Usage.InventUsage" />
         <activity
             android:name=".Activity.Stock.AddStock"
             android:exported="false" />
@@ -47,11 +52,11 @@
             android:exported="false"
             android:parentActivityName=".Activity.Menu.MenuSet" />
         <activity
-            android:name=".Activity.InventReport"
+            android:name=".Activity.Report.InventReport"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".Activity.InventForecast"
+            android:name=".Activity.Forecast.InventForecast"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
         <activity

@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.provider.CalendarContract;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -17,19 +16,21 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.inventori.API.APIReport;
 import com.example.inventori.API.APIRequestStock;
 import com.example.inventori.API.APIRestock;
 import com.example.inventori.API.ServerConnection;
 import com.example.inventori.Activity.User.UserSession;
-import com.example.inventori.Adapter.AdapterRestock;
-import com.example.inventori.Adapter.AdapterSpinnerRestock;
+import com.example.inventori.Adapter.LVAdapter.AdapterRestock;
+import com.example.inventori.Adapter.SpinnerAdapter.AdapterSpinnerRestock;
 import com.example.inventori.R;
 import com.example.inventori.model.KomposisiModel;
 import com.example.inventori.model.ResponseModel;
 import com.example.inventori.model.RestockModel;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,11 +50,13 @@ public class InventRestock extends AppCompatActivity {
     EditText etRestockJumlah;
     AdapterSpinnerRestock adapterRestock;
     Button btnCollectRestock, btnAddRestocklist;
-    String user, bahan, satuan;
+    String user, bahan, satuan, bahanI, satuanI, formatedTime;
     UserSession userSession;
     int id, jumlah, jumlahI, idI;
     @SuppressLint("StaticFieldLeak")
     public static LinearLayout layoutRestock;
+    LocalDateTime time;
+    String date, orderSeries, month;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,18 +120,33 @@ public class InventRestock extends AppCompatActivity {
         });
 
         btnCollectRestock.setOnClickListener(view1 -> {
+            time = LocalDateTime.now();
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyMMddHHmmss");
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            DateTimeFormatter monthType = DateTimeFormatter.ofPattern("MM/yyyy");
+            month = monthType.format(time);
+            formatedTime = timeFormatter.format(time);
+            date = dtf.format(time);
+            orderSeries = "C."+date;
+            System.out.println(time);
+
             if(listRestock!=null && listRestock.size()!=0){
                 AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-                dialog.setMessage("konfirmasi stok masuk");
+                dialog.setMessage("Konfirmasi stok masuk");
                 dialog.setPositiveButton("Iya", (dialogInterface, i) -> {
+                    record();
                     for (i = 0; i<listRestock.size();i++){
                         View view2 = lvRestock.getChildAt(i);
                         TextView tvIdBahan = view2.findViewById(R.id.tvIdBahan);
                         TextView tvJumlah = view2.findViewById(R.id.tvJumlah);
+                        TextView tvBahan = view2.findViewById(R.id.tvBahan);
+                        TextView tvSatuan = view2.findViewById(R.id.tvSatuan);
 
                         idI = Integer.parseInt(tvIdBahan.getText().toString().trim());
                         jumlahI = Integer.parseInt(tvJumlah.getText().toString().trim());
-
+                        bahanI = tvBahan.getText().toString().trim();
+                        satuanI = tvSatuan.getText().toString().trim();
+                        recordRestock();
                         restockAdd();
                     }
                     finish();
@@ -198,5 +216,42 @@ public class InventRestock extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void recordRestock(){
+        APIReport record = ServerConnection.connection().create(APIReport.class);
+        Call<ResponseModel> recordData = record.recordRestock(orderSeries,bahanI,jumlahI,satuanI,user,formatedTime);
+
+        recordData.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseModel> call,@NonNull Response<ResponseModel> response) {
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
+
+            }
+        });
+
+    }
+
+    private void record(){
+        APIReport record = ServerConnection.connection().create(APIReport.class);
+        Call<ResponseModel> recordData = record.record(orderSeries,"barang masuk",
+                formatedTime, user, month);
+
+        recordData.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
+
+            }
+        });
+
     }
 }

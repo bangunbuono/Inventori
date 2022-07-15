@@ -58,4 +58,12 @@ public interface APIRequestStock {
             @Field("id") int id,
             @Field("jumlah") int jumlah
     );
+
+    @FormUrlEncoded
+    @POST("stockdelete.php")
+    Call<ResponseModel> deleteStock(
+      @Field("id") int id,
+      @Field("bahan") String bahan,
+      @Field("user") String user
+    );
 }

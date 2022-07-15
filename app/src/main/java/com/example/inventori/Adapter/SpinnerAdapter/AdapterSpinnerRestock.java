@@ -1,4 +1,4 @@
-package com.example.inventori.Adapter;
+package com.example.inventori.Adapter.SpinnerAdapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,29 +11,30 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.inventori.R;
-import com.example.inventori.model.KomposisiModel;
+import com.example.inventori.model.RestockModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class AdapterSpinnerDetailOrderOpsi extends ArrayAdapter<KomposisiModel> {
+public class AdapterSpinnerRestock extends ArrayAdapter<RestockModel> {
     Context context;
-    List<KomposisiModel> komposisiModelList;
+    List<RestockModel> restockList;
 
-    public AdapterSpinnerDetailOrderOpsi(@NonNull Context context, @NonNull List<KomposisiModel> objects) {
+    public AdapterSpinnerRestock(@NonNull Context context, @NonNull List<RestockModel> objects) {
         super(context, R.layout.restock_spinner, objects);
         this.context = context;
-        komposisiModelList = objects;
+        restockList = objects;
     }
 
     @Override
     public int getCount() {
-        return komposisiModelList.size();
+        return restockList.size();
     }
 
     @Nullable
     @Override
-    public KomposisiModel getItem(int position) {
-        return komposisiModelList.get(position);
+    public RestockModel getItem(int position) {
+        return restockList.get(position);
     }
 
     @NonNull
@@ -44,13 +45,13 @@ public class AdapterSpinnerDetailOrderOpsi extends ArrayAdapter<KomposisiModel> 
                 LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = layoutInflater.inflate(R.layout.restock_spinner, parent,false);
 
-                KomposisiModel komposiList = komposisiModelList.get(position);
-                if(komposiList != null)
+                RestockModel restock = restockList.get(position);
+                if(restock != null)
                 {
                     TextView tvSpinner = convertView.findViewById(R.id.tvRestockSpinner);
                     TextView tvRestockId = convertView.findViewById(R.id.tvRestockIdSpinner);
-                    tvSpinner.setText(komposiList.getBahan() + " " +komposiList.getJumlah()+" "+komposiList.getSatuan());
-                    tvRestockId.setText(komposiList.getId()+"");
+                    tvSpinner.setText(restock.getBahan_baku());
+                    tvRestockId.setText(restock.getId()+"");
                 }
             }
 
@@ -69,13 +70,13 @@ public class AdapterSpinnerDetailOrderOpsi extends ArrayAdapter<KomposisiModel> 
                 LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = layoutInflater.inflate(R.layout.restock_spinner, parent,false);
 
-                KomposisiModel komposisiModel = komposisiModelList.get(position);
-                if(komposisiModel != null)
+                RestockModel restock = restockList.get(position);
+                if(restock != null)
                 {
                     TextView tvSpinner = convertView.findViewById(R.id.tvRestockSpinner);
                     TextView tvRestockId = convertView.findViewById(R.id.tvRestockIdSpinner);
-                    tvSpinner.setText(komposisiModel.getBahan() + " " +komposisiModel.getJumlah()+" "+komposisiModel.getSatuan());
-                    tvRestockId.setText(komposisiModel.getId()+"");
+                    tvSpinner.setText(restock.getBahan_baku());
+                    tvRestockId.setText(restock.getId()+"");
                 }
             }
 
