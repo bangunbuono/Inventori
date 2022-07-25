@@ -7,12 +7,37 @@ import java.util.List;
 
 public class ResponseModel {
     private int code;
+    private List<StocksModel> stocksModels;
+    private ArrayList<RestockModel> stocks;
     private String pesan, status;
     private List<MenuModel> data;
     private List<KomposisiModel> komposisiModelList, komposisiOpsiList;
     private List<MonthModel> bulan;
     private List<RecordModel> record, recordDetail;
+    private List<RecordModel> date;
     private List<StatModel> statmodel;
+    private List<StatModel> statSatuan;
+
+    public List<StatModel> getStatBahan() {
+        return statBahan;
+    }
+
+    public void setStatBahan(List<StatModel> statBahan) {
+        this.statBahan = statBahan;
+    }
+
+    private List<StatModel> statBahan;
+
+
+
+
+    public List<StatModel> getStatSatuan() {
+        return statSatuan;
+    }
+
+    public void setStatSatuan(List<StatModel> statSatuan) {
+        this.statSatuan = statSatuan;
+    }
 
     public List<StatModel> getStatmodel() {
         return statmodel;
@@ -42,8 +67,6 @@ public class ResponseModel {
         this.date = date;
     }
 
-    private List<RecordModel> date;
-
     public List<RecordModel> getRecord() {
         return record;
     }
@@ -67,9 +90,6 @@ public class ResponseModel {
     public void setKomposisiOpsiList(List<KomposisiModel> komposisiOpsiList) {
         this.komposisiOpsiList = komposisiOpsiList;
     }
-
-    private List<StocksModel> stocksModels;
-    private ArrayList<RestockModel> stocks;
 
     public String getStatus() {
         return status;

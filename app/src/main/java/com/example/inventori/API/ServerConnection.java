@@ -1,5 +1,14 @@
 package com.example.inventori.API;
 
+import android.view.View;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -18,6 +27,25 @@ public class ServerConnection {
                     build();
         }
 
+        return retrofit;
+    }
+
+    public static Retrofit connectionLenient(){
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient.Builder client = new OkHttpClient.Builder();
+        client.addInterceptor(interceptor);
+
+        Gson gson = new GsonBuilder().setLenient().create();
+        GsonConverterFactory.create(gson);
+
+        if(retrofit==null){
+            retrofit = new Retrofit.Builder().
+                    baseUrl(URL).
+                    client(client.build()).
+                    addConverterFactory(GsonConverterFactory.create(gson)).
+                    build();
+        }
         return retrofit;
     }
 }

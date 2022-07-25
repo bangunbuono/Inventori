@@ -6,6 +6,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.example.inventori.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -15,6 +19,7 @@ public class InventReport extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     Fragment fragment;
     FragmentManager manager;
+    RadioGroup radioGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +29,7 @@ public class InventReport extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         bottomNavigationView = findViewById(R.id.navReport);
+        radioGroup = findViewById(R.id.radioGroupTime);
 
         bottomNavigationView.setItemHorizontalTranslationEnabled(true);
 

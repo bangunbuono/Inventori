@@ -29,6 +29,7 @@ import com.example.inventori.model.ResponseModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -69,7 +70,7 @@ public class HistoryFrag extends Fragment implements AdapterMonth.onClick{
         rvDateList = view.findViewById(R.id.rvRecordList);
         spinnerRecordFilter = view.findViewById(R.id.spinnerRecordFilter);
         displayMetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        Objects.requireNonNull(getActivity()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
         session = new UserSession(getActivity());
         user = session.getUserDetail().get("username");
@@ -82,6 +83,9 @@ public class HistoryFrag extends Fragment implements AdapterMonth.onClick{
         recordFilter.add("semua");
         recordFilter.add("barang keluar");
         recordFilter.add("barang masuk");
+
+        layoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
+        rvMonth.setLayoutManager(layoutManager);
 
         filter = new ArrayAdapter<>(getActivity(), R.layout.simple_spinner_style, recordFilter);
         filter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -103,10 +107,14 @@ public class HistoryFrag extends Fragment implements AdapterMonth.onClick{
         getMonth();
 
         if(monthList!=null){
+//            rvMonth.post(() -> rvMonth.smoothScrollToPosition(monthList.size()-1));
+//            new Handler().post(() -> rvMonth.smoothScrollToPosition(monthList.size()-1));
             new Handler().postDelayed(()-> {
-                rvMonth.smoothScrollToPosition(monthList.size()-1);
-                dateRecordInitiate();
-            },800);
+                        layoutManager.smoothScrollToPosition(
+                                rvMonth, new RecyclerView.State(),monthList.size()-1);
+                        rvMonth.smoothScrollToPosition(monthList.size()-1);
+                        }
+                    ,800);
         }
         return view;
     }
@@ -143,12 +151,11 @@ public class HistoryFrag extends Fragment implements AdapterMonth.onClick{
                 adapter = new AdapterMonth(getActivity(), monthList, HistoryFrag.this);
                 if(monthList!= null){
                     new Handler().postDelayed(()->{
-                        rvMonth.setLayoutManager(layoutManager);
                         rvMonth.setAdapter(adapter);
-                        layoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
 //                        new Handler().postDelayed(()->
-                    },150);
-//                    layoutManager = new GridLayoutManager(getActivity(),1,RecyclerView.HORIZONTAL,false);
+                    },200);
+                    dateRecordInitiate();
+                    //                    layoutManager = new GridLayoutManager(getActivity(),1,RecyclerView.HORIZONTAL,false);
                 }
             }
 
@@ -171,9 +178,9 @@ public class HistoryFrag extends Fragment implements AdapterMonth.onClick{
                 dateRecord = response.body().getDate();
                 adapterDate = new AdapterDate(getActivity(), dateRecord);
                 if(dateRecord!=null){
+                    dateListLayoutManager = new LinearLayoutManager(getActivity(),RecyclerView.VERTICAL,false);
                     rvDateList.setLayoutManager(dateListLayoutManager);
                     rvDateList.setAdapter(adapterDate);
-                    dateListLayoutManager = new LinearLayoutManager(getActivity(),RecyclerView.VERTICAL,false);
                 }
 
             }

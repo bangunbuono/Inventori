@@ -34,20 +34,17 @@ public class AdapterMonth extends RecyclerView.Adapter<AdapterMonth.Holder> {
     }
 
     public class Holder extends RecyclerView.ViewHolder implements View.OnClickListener{
-
         TextView tvMonth;
         CardView cvMonth;
         onClick onClickListener;
 
         public Holder(@NonNull View itemView, onClick onClick) {
             super(itemView);
-
             tvMonth = itemView.findViewById(R.id.tvMonth);
             cvMonth = itemView.findViewById(R.id.cvMonth);
             itemView.setOnClickListener(this);
             layoutManager = new LinearLayoutManager(context);
             onClickListener = onClick;
-
         }
 
         @Override

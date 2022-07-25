@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/drawable/chat_selector.xml" value="0.1" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/drawable/filter_background.xml" value="0.20043290043290043" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/drawable/history_nav_selector.xml" value="0.20043290043290043" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/drawable/home.xml" value="0.23743589743589744" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/drawable/home_button.xml" value="0.20043290043290043" />
@@ -18,17 +19,19 @@
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/drawable/null_usage_button.xml" value="0.24114583333333334" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/drawable/setting_selector.xml" value="0.23743589743589744" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/drawable/stat_nav_selector.xml" value="0.20043290043290043" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/drawable/stat_text_time_selector.xml" value="0.20307017543859648" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/drawable/usage_not_selected.xml" value="0.24114583333333334" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/drawable/usage_selected.xml" value="0.24114583333333334" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/drawable/usage_selector.xml" value="0.24114583333333334" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/drawable/usage_text_notselected.xml" value="0.24114583333333334" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/drawable/usage_text_selected.xml" value="0.24114583333333334" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/drawable/usage_text_selector.xml" value="0.24114583333333334" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/drawable/usageauto_selected.xml" value="0.20043290043290043" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/drawable/usageauto_selector.xml" value="0.20043290043290043" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/drawable/usagemanual_not_selected.xml" value="0.20307017543859648" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/drawable/usagemanual_selected.xml" value="0.20307017543859648" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/drawable/usagemanual_selector.xml" value="0.20307017543859648" />
-        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/activity_add_menu.xml" value="0.25" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/activity_add_menu.xml" value="0.22" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/activity_add_stock.xml" value="0.225" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/activity_invent_forecast.xml" value="0.225" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/activity_invent_report.xml" value="0.2109375" />
@@ -47,12 +50,13 @@
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/activity_report_detail.xml" value="0.18947368421052632" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/activity_usage_komposisi_detail.xml" value="0.25" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/activity_usage_set.xml" value="0.225" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/bar_graph_row.xml" value="0.18947368421052632" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/date_row.xml" value="0.18947368421052632" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/fragment_chatt.xml" value="0.25" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/fragment_history.xml" value="0.18947368421052632" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/fragment_home.xml" value="0.225" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/fragment_setting.xml" value="0.25" />
-        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/fragment_stat.xml" value="0.17763157894736842" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/fragment_stat.xml" value="0.22" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/fragment_usage_auto.xml" value="0.225" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/fragment_usage_auto_detail.xml" value="0.18947368421052632" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/fragment_usage_frag_detail.xml" value="0.18947368421052632" />
@@ -66,9 +70,10 @@
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/record_row.xml" value="0.25" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/restock_spin.xml" value="0.225" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/restock_spinner.xml" value="0.225" />
-        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/satuan_row.xml" value="0.18947368421052632" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/satuan_row.xml" value="0.25" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/spinner_restock.xml" value="0.225" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/spinner_simple_text.xml" value="0.18947368421052632" />
+        <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/stat_bahan_row.xml" value="0.25" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/stock_row.xml" value="0.225" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/usage_auto_row.xml" value="0.25" />
         <entry key="..\:/Users/hp/AndroidStudioProjects/Inventori/app/src/main/res/layout/usage_row.xml" value="0.225" />

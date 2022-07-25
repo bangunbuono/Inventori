@@ -4,9 +4,11 @@ import com.example.inventori.model.ResponseModel;
 
 import java.time.LocalDateTime;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 public interface APIReport {
@@ -78,5 +80,58 @@ public interface APIReport {
     Call<ResponseModel> satuanList(
             @Field("user") String user
     );
+
+    @FormUrlEncoded
+    @POST("statweekly.php")
+    Call<ResponseModel> listSatuanWeekly(
+            @Field("user") String user,
+            @Field("satuan") String satuan,
+            @Field("week") int week
+    );
+
+    @FormUrlEncoded
+    @POST("statweeksatuan.php")
+    Call<ResponseModel> statList(
+            @Field("user") String user,
+            @Field("satuan") String satuan,
+            @Field("week") int week,
+            @Field("month") int month,
+            @Field("year") int year,
+            @Field("keterangan") String keterangan
+    );
+
+    @FormUrlEncoded
+    @POST("statweeksatuanin.php")
+    Call<ResponseModel> statListIn(
+            @Field("user") String user,
+            @Field("satuan") String satuan,
+            @Field("week") int week,
+            @Field("month") int month,
+            @Field("year") int year,
+            @Field("keterangan") String keterangan
+    );
+
+    @FormUrlEncoded
+    @POST("statweekbahan.php")
+    Call<ResponseModel> statListBahan(
+            @Field("user") String user,
+            @Field("bahan") String bahan,
+            @Field("week") int week,
+            @Field("month") int month,
+            @Field("year") int year,
+            @Field("keterangan") String keterangan
+    );
+
+    @FormUrlEncoded
+    @POST("statweekbahanin.php")
+    Call<ResponseModel> statListBahanIn(
+            @Field("user") String user,
+            @Field("bahan") String bahan,
+            @Field("week") int week,
+            @Field("month") int month,
+            @Field("year") int year,
+            @Field("keterangan") String keterangan
+    );
+
 
 }

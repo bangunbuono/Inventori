@@ -7,30 +7,35 @@
     android:layout_height="match_parent"
     tools:context=".Activity.Report.InventReport">
 
-<!--    <fragment-->
-<!--        android:id="@+id/historyFrag"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:name="com.example.inventori.Activity.Report.HistoryFrag"-->
-<!--        tools:layout="@layout/fragment_history" />-->
-
-<!--    <fragment-->
-<!--        android:id="@+id/statFrag"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:name="com.example.inventori.Activity.Report.StatFrag"-->
-<!--        tools:layout="@layout/fragment_stat" />-->
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/flFragmentReport"/>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/navReport"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/llNavBarReport">
+
+        <FrameLayout
+            android:id="@+id/flFragmentReport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llNavBarReport"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        app:menu="@menu/report_bottomnav" />
+        android:gravity="bottom|center">
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/navReport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:menu="@menu/report_bottomnav" />
+
+    </LinearLayout>
+
+
 
 </RelativeLayout>
