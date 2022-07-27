@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-
     <application
         android:name=".UsageAutoApplication"
         android:allowBackup="true"
@@ -17,62 +16,71 @@
         android:theme="@style/Theme.Inventori"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".Activity.Report.ReportDetail"
-            android:exported="false"
-            android:parentActivityName=".Activity.Report.InventReport"/>
-        <activity
-            android:name=".Activity.Menu.KomposisiEdit"
+            android:name="Activity.User.ManagerRegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.User.RegisterActivity"
+            android:name=".ManagerMainActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.User.LoginActivity"
+            android:name="Activity.User.ManagerLoginActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.Usage.UsageKomposisiDetail"
+            android:name="Activity.Report.ReportDetail"
             android:exported="false"
-            android:parentActivityName=".Activity.Usage.InventUsage" />
+            android:parentActivityName="Activity.Report.InventReport" />
         <activity
-            android:name=".Activity.Stock.AddStock"
+            android:name="Activity.Menu.KomposisiEdit"
             android:exported="false" />
         <activity
-            android:name=".Activity.Stock.InventorySetDetail"
-            android:exported="false"
-            android:parentActivityName=".Activity.Stock.InventorySet" />
-        <activity
-            android:name=".Activity.Menu.KomposisiSet"
+            android:name="Activity.User.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.Menu.MenuSetDetail"
-            android:exported="false"
-            android:parentActivityName=".Activity.Menu.MenuSet" />
+            android:name="Activity.User.LoginActivity"
+            android:exported="false" />
         <activity
-            android:name=".Activity.Menu.AddMenu"
+            android:name="Activity.Usage.UsageKomposisiDetail"
             android:exported="false"
-            android:parentActivityName=".Activity.Menu.MenuSet" />
+            android:parentActivityName="Activity.Usage.InventUsage" />
         <activity
-            android:name=".Activity.Report.InventReport"
+            android:name="Activity.Stock.AddStock"
+            android:exported="false" />
+        <activity
+            android:name="Activity.Stock.InventorySetDetail"
+            android:exported="false"
+            android:parentActivityName="Activity.Stock.InventorySet" />
+        <activity
+            android:name="Activity.Menu.KomposisiSet"
+            android:exported="false" />
+        <activity
+            android:name="Activity.Menu.MenuSetDetail"
+            android:exported="false"
+            android:parentActivityName="Activity.Menu.MenuSet" />
+        <activity
+            android:name="Activity.Menu.AddMenu"
+            android:exported="false"
+            android:parentActivityName="Activity.Menu.MenuSet" />
+        <activity
+            android:name="Activity.Report.InventReport"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".Activity.Forecast.InventForecast"
+            android:name="Activity.Forecast.InventForecast"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".Activity.Restock.InventRestock"
+            android:name="Activity.Restock.InventRestock"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".Activity.Usage.InventUsage"
+            android:name="Activity.Usage.InventUsage"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".Activity.Menu.MenuSet"
+            android:name="Activity.Menu.MenuSet"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".Activity.Stock.InventorySet"
+            android:name="Activity.Stock.InventorySet"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
         <activity

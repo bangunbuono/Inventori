@@ -23,4 +23,18 @@ public interface APIAccounts {
             @Field("username") String username,
             @Field("password") String password
     );
+
+    @FormUrlEncoded
+    @POST("registermanager.php")
+    Call<ResponseModel> registerManager(
+            @Field("manager_name") String managerName,
+            @Field("password") String password
+    );
+
+    @FormUrlEncoded
+    @POST("loginmanager.php")
+    Call<ResponseModel> loginManager(
+            @Field("manager_name") String username,
+            @Field("password") String password
+    );
 }

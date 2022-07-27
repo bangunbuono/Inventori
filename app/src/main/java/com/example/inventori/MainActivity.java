@@ -10,14 +10,14 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.inventori.Activity.Forecast.InventForecast;
-import com.example.inventori.Activity.Report.InventReport;
-import com.example.inventori.Activity.Restock.InventRestock;
-import com.example.inventori.Activity.Usage.InventUsage;
-import com.example.inventori.Activity.Stock.InventorySet;
-import com.example.inventori.Activity.Menu.MenuSet;
-import com.example.inventori.Activity.User.LoginActivity;
-import com.example.inventori.Activity.User.UserSession;
+import Activity.Forecast.InventForecast;
+import Activity.Report.InventReport;
+import Activity.Restock.InventRestock;
+import Activity.Usage.InventUsage;
+import Activity.Stock.InventorySet;
+import Activity.Menu.MenuSet;
+import Activity.User.LoginActivity;
+import Activity.User.UserSession;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Objects;
@@ -42,8 +42,12 @@ public class MainActivity extends AppCompatActivity {
         if(!userSession.isLoggedIn()){
             moveToLogin();
         }
+        if(userSession.getManagerDetail().get("manager")!=null) {
+            startActivity(new Intent(this, ManagerMainActivity.class));
+        }else{
+            user = userSession.getUserDetail().get("username");
+        }
 
-        user = userSession.getUserDetail().get("username");
 
         tvUser = findViewById(R.id.tvUser);
         navView = findViewById(R.id.navView);

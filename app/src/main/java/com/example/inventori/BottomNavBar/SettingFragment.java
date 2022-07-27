@@ -7,9 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.example.inventori.Activity.User.UserSession;
 import com.example.inventori.R;
 
 public class SettingFragment extends Fragment {
