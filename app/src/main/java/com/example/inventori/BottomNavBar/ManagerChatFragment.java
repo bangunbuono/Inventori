@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.inventori.R;
 
-import Activity.User.UserSession;
+import com.example.inventori.Activity.User.UserSession;
 
 public class ManagerChatFragment extends Fragment {
 

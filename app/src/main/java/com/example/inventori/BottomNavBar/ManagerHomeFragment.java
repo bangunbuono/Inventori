@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.inventori.R;
 
-import Activity.User.UserSession;
+import com.example.inventori.Activity.User.UserSession;
 
 public class ManagerHomeFragment extends Fragment {
     UserSession session;
@@ -26,6 +26,7 @@ public class ManagerHomeFragment extends Fragment {
 
         session = new UserSession(getActivity());
         manager = session.getManagerDetail().get("manager");
+
     }
 
     @Override

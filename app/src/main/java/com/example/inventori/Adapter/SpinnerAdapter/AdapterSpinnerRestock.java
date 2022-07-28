@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import com.example.inventori.R;
 import com.example.inventori.model.RestockModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterSpinnerRestock extends ArrayAdapter<RestockModel> {

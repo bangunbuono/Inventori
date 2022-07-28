@@ -16,71 +16,71 @@
         android:theme="@style/Theme.Inventori"
         android:usesCleartextTraffic="true">
         <activity
-            android:name="Activity.User.ManagerRegisterActivity"
+            android:name="com.example.inventori.Activity.User.ManagerRegisterActivity"
             android:exported="false" />
         <activity
             android:name=".ManagerMainActivity"
             android:exported="false" />
         <activity
-            android:name="Activity.User.ManagerLoginActivity"
+            android:name="com.example.inventori.Activity.User.ManagerLoginActivity"
             android:exported="false" />
         <activity
-            android:name="Activity.Report.ReportDetail"
+            android:name="com.example.inventori.Activity.Report.ReportDetail"
             android:exported="false"
-            android:parentActivityName="Activity.Report.InventReport" />
+            android:parentActivityName="com.example.inventori.Activity.Report.InventReport" />
         <activity
-            android:name="Activity.Menu.KomposisiEdit"
+            android:name="com.example.inventori.Activity.Menu.KomposisiEdit"
             android:exported="false" />
         <activity
-            android:name="Activity.User.RegisterActivity"
+            android:name="com.example.inventori.Activity.User.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name="Activity.User.LoginActivity"
+            android:name="com.example.inventori.Activity.User.LoginActivity"
             android:exported="false" />
         <activity
-            android:name="Activity.Usage.UsageKomposisiDetail"
+            android:name="com.example.inventori.Activity.Usage.UsageKomposisiDetail"
             android:exported="false"
-            android:parentActivityName="Activity.Usage.InventUsage" />
+            android:parentActivityName="com.example.inventori.Activity.Usage.InventUsage" />
         <activity
-            android:name="Activity.Stock.AddStock"
+            android:name="com.example.inventori.Activity.Stock.AddStock"
             android:exported="false" />
         <activity
-            android:name="Activity.Stock.InventorySetDetail"
+            android:name="com.example.inventori.Activity.Stock.InventorySetDetail"
             android:exported="false"
-            android:parentActivityName="Activity.Stock.InventorySet" />
+            android:parentActivityName="com.example.inventori.Activity.Stock.InventorySet" />
         <activity
-            android:name="Activity.Menu.KomposisiSet"
+            android:name="com.example.inventori.Activity.Menu.KomposisiSet"
             android:exported="false" />
         <activity
-            android:name="Activity.Menu.MenuSetDetail"
+            android:name="com.example.inventori.Activity.Menu.MenuSetDetail"
             android:exported="false"
-            android:parentActivityName="Activity.Menu.MenuSet" />
+            android:parentActivityName="com.example.inventori.Activity.Menu.MenuSet" />
         <activity
-            android:name="Activity.Menu.AddMenu"
+            android:name="com.example.inventori.Activity.Menu.AddMenu"
             android:exported="false"
-            android:parentActivityName="Activity.Menu.MenuSet" />
+            android:parentActivityName="com.example.inventori.Activity.Menu.MenuSet" />
         <activity
-            android:name="Activity.Report.InventReport"
+            android:name="com.example.inventori.Activity.Report.InventReport"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name="Activity.Forecast.InventForecast"
+            android:name="com.example.inventori.Activity.Forecast.InventForecast"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name="Activity.Restock.InventRestock"
+            android:name="com.example.inventori.Activity.Restock.InventRestock"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name="Activity.Usage.InventUsage"
+            android:name="com.example.inventori.Activity.Usage.InventUsage"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name="Activity.Menu.MenuSet"
+            android:name="com.example.inventori.Activity.Menu.MenuSet"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name="Activity.Stock.InventorySet"
+            android:name="com.example.inventori.Activity.Stock.InventorySet"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
         <activity
@@ -92,6 +92,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

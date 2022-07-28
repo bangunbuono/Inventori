@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="Activity.Menu.KomposisiSet">
+    tools:context="com.example.inventori.Activity.Menu.KomposisiSet">
 
     <TextView
         android:id="@+id/tvKomposisi"

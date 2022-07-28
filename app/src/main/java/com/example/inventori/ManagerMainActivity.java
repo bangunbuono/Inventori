@@ -9,14 +9,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.inventori.BottomNavBar.HomeFragment;
 import com.example.inventori.BottomNavBar.ManagerChatFragment;
 import com.example.inventori.BottomNavBar.ManagerHomeFragment;
 import com.example.inventori.BottomNavBar.ManagerSettingsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import Activity.User.ManagerLoginActivity;
-import Activity.User.UserSession;
+import com.example.inventori.Activity.User.ManagerLoginActivity;
+import com.example.inventori.Activity.User.UserSession;
 
 public class ManagerMainActivity extends AppCompatActivity {
     UserSession userSession;

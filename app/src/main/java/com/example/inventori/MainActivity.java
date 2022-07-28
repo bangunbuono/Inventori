@@ -10,14 +10,14 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
-import Activity.Forecast.InventForecast;
-import Activity.Report.InventReport;
-import Activity.Restock.InventRestock;
-import Activity.Usage.InventUsage;
-import Activity.Stock.InventorySet;
-import Activity.Menu.MenuSet;
-import Activity.User.LoginActivity;
-import Activity.User.UserSession;
+import com.example.inventori.Activity.Forecast.InventForecast;
+import com.example.inventori.Activity.Report.InventReport;
+import com.example.inventori.Activity.Restock.InventRestock;
+import com.example.inventori.Activity.Usage.InventUsage;
+import com.example.inventori.Activity.Stock.InventorySet;
+import com.example.inventori.Activity.Menu.MenuSet;
+import com.example.inventori.Activity.User.LoginActivity;
+import com.example.inventori.Activity.User.UserSession;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Objects;
